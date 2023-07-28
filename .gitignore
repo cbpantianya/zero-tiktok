@@ -12,3 +12,6 @@
 *.out
 
 go.work
+
+user.yaml
+/service/video/etc/video.yaml
