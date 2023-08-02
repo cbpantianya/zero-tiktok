@@ -38,7 +38,7 @@ func NewVideoServiceClient(cc grpc.ClientConnInterface) VideoServiceClient {
 
 func (c *videoServiceClient) Feed(ctx context.Context, in *FeedRequest, opts ...grpc.CallOption) (*VideoListResp, error) {
 	out := new(VideoListResp)
-	err := c.cc.Invoke(ctx, "/user.VideoService/Feed", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/video.VideoService/Feed", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (c *videoServiceClient) Feed(ctx context.Context, in *FeedRequest, opts ...
 
 func (c *videoServiceClient) Publish(ctx context.Context, in *PublishRequest, opts ...grpc.CallOption) (*VideoListResp, error) {
 	out := new(VideoListResp)
-	err := c.cc.Invoke(ctx, "/user.VideoService/Publish", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/video.VideoService/Publish", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (c *videoServiceClient) Publish(ctx context.Context, in *PublishRequest, op
 
 func (c *videoServiceClient) Favorite(ctx context.Context, in *FavoriteAction, opts ...grpc.CallOption) (*FavoriteActionResp, error) {
 	out := new(FavoriteActionResp)
-	err := c.cc.Invoke(ctx, "/user.VideoService/Favorite", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/video.VideoService/Favorite", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func (c *videoServiceClient) Favorite(ctx context.Context, in *FavoriteAction, o
 
 func (c *videoServiceClient) FavoriteList(ctx context.Context, in *FavoriteRequest, opts ...grpc.CallOption) (*VideoListResp, error) {
 	out := new(VideoListResp)
-	err := c.cc.Invoke(ctx, "/user.VideoService/FavoriteList", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/video.VideoService/FavoriteList", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +122,7 @@ func _VideoService_Feed_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.VideoService/Feed",
+		FullMethod: "/video.VideoService/Feed",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(VideoServiceServer).Feed(ctx, req.(*FeedRequest))
@@ -140,7 +140,7 @@ func _VideoService_Publish_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.VideoService/Publish",
+		FullMethod: "/video.VideoService/Publish",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(VideoServiceServer).Publish(ctx, req.(*PublishRequest))
@@ -158,7 +158,7 @@ func _VideoService_Favorite_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.VideoService/Favorite",
+		FullMethod: "/video.VideoService/Favorite",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(VideoServiceServer).Favorite(ctx, req.(*FavoriteAction))
@@ -176,7 +176,7 @@ func _VideoService_FavoriteList_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.VideoService/FavoriteList",
+		FullMethod: "/video.VideoService/FavoriteList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(VideoServiceServer).FavoriteList(ctx, req.(*FavoriteRequest))
@@ -188,7 +188,7 @@ func _VideoService_FavoriteList_Handler(srv interface{}, ctx context.Context, de
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var VideoService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "user.VideoService",
+	ServiceName: "video.VideoService",
 	HandlerType: (*VideoServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
