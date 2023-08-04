@@ -2,6 +2,8 @@ package logic
 
 import (
 	"context"
+	e "zero-tiktok/internal/error"
+	"zero-tiktok/service/video/internal/model"
 
 	"zero-tiktok/service/video/internal/svc"
 	"zero-tiktok/service/video/pb/zero-tiktok/service/video"
@@ -24,7 +26,24 @@ func NewFavoriteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Favorite
 }
 
 func (l *FavoriteLogic) Favorite(in *video.FavoriteAction) (*video.FavoriteActionResp, error) {
-	// todo: add your logic here and delete this line
+	// 喜欢操作
+	if in.Action == true {
+		// 点赞
+		var favorite = &model.Favorite{
+			UserID:  in.UserId,
+			VideoID: in.VideoId,
+		}
 
+		err := l.svcCtx.DB.Create(favorite).Error
+		if err != nil {
+			return nil, e.ErrDB
+		}
+	} else {
+		// 删除点赞
+		err := l.svcCtx.DB.Where("user_id = ? and video_id = ?", in.UserId, in.VideoId).Delete(&model.Favorite{}).Error
+		if err != nil {
+			return nil, err
+		}
+	}
 	return &video.FavoriteActionResp{}, nil
 }
