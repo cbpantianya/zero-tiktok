@@ -1,6 +1,9 @@
 package error
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 // 统一错误处理
 
@@ -12,8 +15,8 @@ type Error struct {
 }
 
 func (e Error) Error() string {
-	// DO Noting
-	return e.Msg
+	// code to string
+	return fmt.Sprintf("code: %d, msg: %s, inner: %v", e.Code, e.Msg, e.Inner)
 }
 
 // NewError 新建错误
