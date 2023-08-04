@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package user;
 option go_package = "zero-tiktok/service/user";
-
+ 
 message User {
   int64 user_id = 1;
   string name = 2;
@@ -62,4 +62,7 @@ service UserService {
   rpc GetUser(GetUserRequest) returns (GetUserResponse);
   // 获取多个用户信息
   rpc GetUsers(GetUsersRequest) returns (GetUsersResponse);
+
+  //识别用户（token转id）
+  rpc GetIdByToken(TokenToUserRequest)returns (TokenToUserResponse);
 }

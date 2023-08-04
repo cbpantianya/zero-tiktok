@@ -32,6 +32,8 @@ type (
 		GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 		// 获取多个用户信息
 		GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error)
+		// 识别用户（token转id）
+		GetIdByToken(ctx context.Context, in *TokenToUserRequest, opts ...grpc.CallOption) (*TokenToUserResponse, error)
 	}
 
 	defaultUserService struct {
@@ -67,4 +69,10 @@ func (m *defaultUserService) GetUser(ctx context.Context, in *GetUserRequest, op
 func (m *defaultUserService) GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error) {
 	client := user.NewUserServiceClient(m.cli.Conn())
 	return client.GetUsers(ctx, in, opts...)
+}
+
+// 识别用户（token转id）
+func (m *defaultUserService) GetIdByToken(ctx context.Context, in *TokenToUserRequest, opts ...grpc.CallOption) (*TokenToUserResponse, error) {
+	client := user.NewUserServiceClient(m.cli.Conn())
+	return client.GetIdByToken(ctx, in, opts...)
 }
