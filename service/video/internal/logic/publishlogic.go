@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"sort"
+	e "zero-tiktok/internal/error"
 	"zero-tiktok/service/video/internal/model"
 
 	"zero-tiktok/service/video/internal/svc"
@@ -29,7 +30,7 @@ func (l *PublishLogic) Publish(in *video.PublishRequest) (*video.VideoListResp, 
 	var videos []*model.Video
 	err := l.svcCtx.DB.Where("author_id = ?", in.TargetId).Find(&videos).Error
 	if err != nil {
-		return nil, err
+		return nil, e.ErrDB
 	}
 
 	var ids []int64
@@ -54,7 +55,7 @@ func (l *PublishLogic) Publish(in *video.PublishRequest) (*video.VideoListResp, 
 	var favorites []model.Favorite
 	err = l.svcCtx.DB.Model(model.Favorite{}).Where("video_id in (?)", ids).Find(&favorites).Error
 	if err != nil {
-		return nil, err
+		return nil, e.ErrDB
 	}
 
 	for _, v := range favorites {
@@ -65,7 +66,7 @@ func (l *PublishLogic) Publish(in *video.PublishRequest) (*video.VideoListResp, 
 	var comments []model.Comment
 	err = l.svcCtx.DB.Model(model.Comment{}).Where("video_id in (?)", ids).Find(&comments).Error
 	if err != nil {
-		return nil, err
+		return nil, e.ErrDB
 	}
 
 	for _, v := range comments {

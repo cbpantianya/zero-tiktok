@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"sort"
+	e "zero-tiktok/internal/error"
 	"zero-tiktok/service/video/internal/model"
 
 	"zero-tiktok/service/video/internal/svc"
@@ -30,7 +31,7 @@ func (l *FavoriteListLogic) FavoriteList(in *video.FavoriteRequest) (*video.Vide
 	var favoriteList []*model.Favorite
 	err := l.svcCtx.DB.Where("user_id = ?", in.TargetId).Find(&favoriteList).Error
 	if err != nil {
-		return nil, err
+		return nil, e.ErrDB
 	}
 
 	var ids []int64
@@ -42,7 +43,7 @@ func (l *FavoriteListLogic) FavoriteList(in *video.FavoriteRequest) (*video.Vide
 	var videos []*model.Video
 	err = l.svcCtx.DB.Where("video_id in (?)", ids).Find(&videos).Error
 	if err != nil {
-		return nil, err
+		return nil, e.ErrDB
 	}
 
 	var resp map[int64]*video.Video

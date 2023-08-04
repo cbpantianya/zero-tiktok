@@ -10,6 +10,7 @@ import (
 	"zero-tiktok/service/video/pb/zero-tiktok/service/video"
 
 	"github.com/zeromicro/go-zero/core/logx"
+	e "zero-tiktok/internal/error"
 )
 
 type FeedLogic struct {
@@ -35,7 +36,7 @@ func (l *FeedLogic) Feed(in *video.FeedRequest) (*video.VideoListResp, error) {
 	// 时间戳比较
 	err := l.svcCtx.DB.Model(model.Video{}).Where("publish_at < ?", latest).Order("publish_at desc").Limit(10).Find(&videos).Error
 	if err != nil {
-		return nil, err
+		return nil, e.ErrDB
 	}
 
 	var ids []int64
@@ -60,7 +61,7 @@ func (l *FeedLogic) Feed(in *video.FeedRequest) (*video.VideoListResp, error) {
 	var favorites []model.Favorite
 	err = l.svcCtx.DB.Model(model.Favorite{}).Where("video_id in (?)", ids).Find(&favorites).Error
 	if err != nil {
-		return nil, err
+		return nil, e.ErrDB
 	}
 
 	for _, v := range favorites {
@@ -71,7 +72,7 @@ func (l *FeedLogic) Feed(in *video.FeedRequest) (*video.VideoListResp, error) {
 	var comments []model.Comment
 	err = l.svcCtx.DB.Model(model.Comment{}).Where("video_id in (?)", ids).Find(&comments).Error
 	if err != nil {
-		return nil, err
+		return nil, e.ErrDB
 	}
 
 	for _, v := range comments {

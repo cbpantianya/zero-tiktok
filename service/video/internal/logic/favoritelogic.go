@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	e "zero-tiktok/internal/error"
 	"zero-tiktok/service/video/internal/model"
 
 	"zero-tiktok/service/video/internal/svc"
@@ -35,7 +36,7 @@ func (l *FavoriteLogic) Favorite(in *video.FavoriteAction) (*video.FavoriteActio
 
 		err := l.svcCtx.DB.Create(favorite).Error
 		if err != nil {
-			return nil, err
+			return nil, e.ErrDB
 		}
 	} else {
 		// 删除点赞
