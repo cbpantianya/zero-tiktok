@@ -45,3 +45,9 @@ func (s *UserServiceServer) GetUsers(ctx context.Context, in *user.GetUsersReque
 	l := logic.NewGetUsersLogic(ctx, s.svcCtx)
 	return l.GetUsers(in)
 }
+
+// 识别用户（token转id）
+func (s *UserServiceServer) GetIdByToken(ctx context.Context, in *user.TokenToUserRequest) (*user.TokenToUserResponse, error) {
+	l := logic.NewGetIdByTokenLogic(ctx, s.svcCtx)
+	return l.GetIdByToken(in)
+}

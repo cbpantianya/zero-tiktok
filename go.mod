@@ -1,11 +1,17 @@
 module zero-tiktok
 
-go 1.20
+go 1.18
 
 require (
+	github.com/go-redis/redis/v8 v8.11.5
+	github.com/golang-jwt/jwt/v4 v4.5.0
+	github.com/hibiken/asynq v0.24.1
 	github.com/zeromicro/go-zero v1.5.4
+	golang.org/x/crypto v0.11.0
 	google.golang.org/grpc v1.57.0
 	google.golang.org/protobuf v1.31.0
+	gorm.io/driver/mysql v1.5.1
+	gorm.io/gorm v1.25.2
 )
 
 require (
@@ -23,14 +29,17 @@ require (
 	github.com/go-openapi/jsonpointer v0.19.6 // indirect
 	github.com/go-openapi/jsonreference v0.20.1 // indirect
 	github.com/go-openapi/swag v0.22.3 // indirect
-	github.com/go-redis/redis/v8 v8.11.5 // indirect
+	github.com/go-sql-driver/mysql v1.7.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/mock v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/gnostic v0.5.7-v3refs // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.0 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
@@ -46,7 +55,10 @@ require (
 	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/common v0.42.0 // indirect
 	github.com/prometheus/procfs v0.10.1 // indirect
+	github.com/redis/go-redis/v9 v9.0.3 // indirect
+	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
+	github.com/spf13/cast v1.3.1 // indirect
 	go.etcd.io/etcd/api/v3 v3.5.9 // indirect
 	go.etcd.io/etcd/client/pkg/v3 v3.5.9 // indirect
 	go.etcd.io/etcd/client/v3 v3.5.9 // indirect
