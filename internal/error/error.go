@@ -1,6 +1,9 @@
 package error
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 // 统一错误处理
 
@@ -9,6 +12,11 @@ type Error struct {
 	Code  int    `json:"code"` // 外部Code
 	Msg   string `json:"msg"`  // 外部Msg
 	Inner error  `json:"-"`    // 内部错误
+}
+
+func (e Error) Error() string {
+	// code to string
+	return fmt.Sprintf("code: %d, msg: %s, inner: %v", e.Code, e.Msg, e.Inner)
 }
 
 // NewError 新建错误
