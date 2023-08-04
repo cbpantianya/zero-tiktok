@@ -11,6 +11,11 @@ type Error struct {
 	Inner error  `json:"-"`    // 内部错误
 }
 
+func (e Error) Error() string {
+	// DO Noting
+	return e.Msg
+}
+
 // NewError 新建错误
 func NewError(code int, msg string, inner error) *Error {
 	return &Error{Code: code, Msg: msg, Inner: inner}
