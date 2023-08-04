@@ -1,0 +1,16 @@
+/.idea
+
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+*.test
+
+*.out
+
+go.work
+
+user.yaml
+/service/video/etc/video.yaml

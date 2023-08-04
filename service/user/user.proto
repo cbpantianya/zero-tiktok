@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package user;
+option go_package = "zero-tiktok/service/user";
+ 
+message User {
+  int64 user_id = 1;
+  string name = 2;
+  string signature = 3;
+  string avatar = 4;
+  string cover = 5; // 用户个人页顶部大图
+  // 总数都从这里拿
+  int64 follow_count = 6;
+  int64 follower_count = 7;
+  int64 total_favorited = 8; // 获得的赞
+  int64 video_count = 9; // 发布的视频数
+  int64 favorite_count = 10; // 获得的赞
+  // 是否关注，从其他微服务拿
+}
+
+message LoginOrRegisterRequest {
+  string name = 1;
+  string pass = 2;
+}
+
+message LoginOrRegisterResponse {
+  string token = 1;
+}
+
+message GetUserRequest {
+  int64 user_id = 1;
+}
+
+message GetUserResponse {
+  User user = 1;
+}
+
+message GetUsersRequest {
+  repeated int64 user_ids = 1;
+}
+
+message GetUsersResponse {
+  repeated User users = 1;
+}
+
+message TokenToUserRequest {
+  string token = 1;
+}
+
+message TokenToUserResponse {
+  int64 user_id = 1;
+}
+
+
+
+service UserService {
+  // 登录
+  rpc Login(LoginOrRegisterRequest) returns (LoginOrRegisterResponse);
+  // 注册
+  rpc Register(LoginOrRegisterRequest) returns (LoginOrRegisterResponse);
+  // 获取单个用户信息
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  // 获取多个用户信息
+  rpc GetUsers(GetUsersRequest) returns (GetUsersResponse);
+
+  //识别用户（token转id）
+  rpc GetIdByToken(TokenToUserRequest)returns (TokenToUserResponse);
+}

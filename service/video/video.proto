@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package user;
+option go_package = "zero-tiktok/service/video";
+
+message Video {
+  int64 video_id = 1;
+  string title = 2;
+  string cover = 3; // URL
+  string play = 4; // URL
+  int64 author_id = 5;
+  int64 favorite_count = 6;
+  int64 comment_count = 7;
+  bool is_favorite = 8;
+}
+
+message FeedRequest {
+  optional int64 user_id = 1;
+  int64 latest = 2; // 时间戳，需要HTTP转换
+}
+
+message VideoListResp {
+  repeated Video list = 1;
+}
+
+message PublishRequest {
+  int64 user_id = 1;   // 登录的用户ID
+  int64 author_id = 2; // 访问目标用户的ID
+}
+
+message FavoriteAction {
+  int64 user_id = 1;
+  int64 video_id = 2;
+  bool action = 3;
+}
+
+message FavoriteActionResp {
+}
+
+message FavoriteRequest {
+  int64 user_id = 1;   // 登录的用户ID
+  int64 author_id = 2; // 访问目标用户的ID
+}
+
+
+
+service VideoService {
+  rpc Feed (FeedRequest) returns (VideoListResp) {}
+  rpc Publish (PublishRequest) returns (VideoListResp) {}
+  rpc Favorite (FavoriteAction) returns (FavoriteActionResp) {}
+  rpc FavoriteList (FavoriteRequest) returns (VideoListResp) {}
+}
+
+
+
+
