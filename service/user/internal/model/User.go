@@ -9,3 +9,7 @@ type User struct {
 	Pass      string `gorm:"column:pass" json:"pass"`
 	Salt      string `gorm:"column:salt" json:"salt"`
 }
+
+func (u *User) TableName() string {
+	return "users"
+}
