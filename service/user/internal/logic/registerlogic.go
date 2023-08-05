@@ -34,7 +34,7 @@ func (l *RegisterLogic) Register(in *user.LoginOrRegisterRequest) (*user.LoginOr
 	username := in.Name
 	// 检查是否已经存在
 	var count int64
-	if err := tx.Model(&model.User{}).Where("username = ?", in.Name).Count(&count).Error; err != nil {
+	if err := tx.Model(&model.User{}).Where("name = ?", in.Name).Count(&count).Error; err != nil {
 		tx.Rollback()
 		return nil, myerror.ErrDB
 	}

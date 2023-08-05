@@ -37,7 +37,7 @@ func (l *LoginLogic) Login(in *user.LoginOrRegisterRequest) (*user.LoginOrRegist
 	//todo 根据username去数据库查找用户，找不到返回用户不存在
 	// 检查是否已经存在
 	var count int64
-	if err := tx.Model(&model.User{}).Where("username = ?", in.Name).Count(&count).Error; err != nil {
+	if err := tx.Model(&model.User{}).Where("name = ?", in.Name).Count(&count).Error; err != nil {
 		tx.Rollback()
 		return nil, myerror.ErrDB
 	}
@@ -46,7 +46,7 @@ func (l *LoginLogic) Login(in *user.LoginOrRegisterRequest) (*user.LoginOrRegist
 		return nil, myerror.ErrDB
 	}
 	var usr model.User
-	if err := tx.Model(&model.User{}).Where("username=?", username).Find(&usr).Error; err != nil {
+	if err := tx.Model(&model.User{}).Where("name=?", username).Find(&usr).Error; err != nil {
 		tx.Rollback()
 		return nil, myerror.ErrDB
 	}
