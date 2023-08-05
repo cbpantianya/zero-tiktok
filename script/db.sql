@@ -32,7 +32,7 @@ create table users
     signature varchar(100) default '这个人很懒，什么都没有留下' null,
     cover     varchar(512)                                     not null comment '用户个人页顶部大图',
     avatar    varchar(512)                                     not null,
-    pass      varchar(32)                                      not null,
+    pass      varchar(60)                                      not null,
     salt      varchar(8)                                       not null
 );
 
