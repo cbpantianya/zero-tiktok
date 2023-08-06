@@ -46,7 +46,7 @@ func (l *GetUsersLogic) GetUsers(in *user.GetUsersRequest) (*user.GetUsersRespon
 	var userResponses []*user.User
 	for _, usr := range users {
 		userResponses = append(userResponses, &user.User{
-			UserId:    int64(usr.ID),
+			UserId:    int64(usr.UserId),
 			Name:      usr.Name,
 			Signature: usr.Signature,
 			Avatar:    usr.Avatar,

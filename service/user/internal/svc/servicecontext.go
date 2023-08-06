@@ -8,8 +8,6 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
-	"zero-tiktok/service/user/internal/model"
-
 	"time"
 	"zero-tiktok/service/user/internal/config"
 )
@@ -61,10 +59,10 @@ func initMysql(c config.Config) *gorm.DB {
 	}
 
 	// 自动建表
-	err = db.AutoMigrate(&model.User{})
-	if err != nil {
-		panic(err)
-	}
+	//err = db.AutoMigrate(&model.User{})
+	//if err != nil {
+	//	panic(err)
+	//}
 
 	return db
 }

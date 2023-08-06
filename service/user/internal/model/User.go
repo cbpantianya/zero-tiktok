@@ -1,11 +1,10 @@
 package model
 
 type User struct {
-	ID        int    `gorm:"column:user_id" json:"user_id"`
-	Name      string `gorm:"column:name" json:"name"`
-	Signature string `gorm:"column:signature" json:"signature"`
-	Cover     string `gorm:"column:cover" json:"cover"`
-	Avatar    string `gorm:"column:avatar" json:"avatar"`
-	Pass      string `gorm:"column:pass" json:"pass"`
-	Salt      string `gorm:"column:salt" json:"salt"`
+	UserId    int    `gorm:"primary_key;auto_increment;not null" json:"user_id"`
+	Name      string `gorm:"not null" json:"name"`
+	Signature string `gorm:"default '这个人很懒，什么都没有留下';not null" json:"signature"`
+	Cover     string `gorm:"not null;comment '用户个人页顶部大图'" json:"cover"`
+	Avatar    string `gorm:"not null" json:"avatar"`
+	Pass      string `gorm:"not null" json:"pass"`
 }

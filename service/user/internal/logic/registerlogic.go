@@ -30,16 +30,16 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 // 注册
 func (l *RegisterLogic) Register(in *user.LoginOrRegisterRequest) (*user.LoginOrRegisterResponse, error) {
 	// todo: add your logic here and delete this line
-	tx := l.svcCtx.DBList.Mysql.Begin()
+	tx := l.svcCtx.DBList.Mysql
 	username := in.Name
 	// 检查是否已经存在
 	var count int64
-	if err := tx.Model(&model.User{}).Where("username = ?", in.Name).Count(&count).Error; err != nil {
-		tx.Rollback()
+	if err := tx.Model(&model.User{}).Where("name = ?", in.Name).Count(&count).Error; err != nil {
+
 		return nil, myerror.ErrDB
 	}
 	if count > 0 {
-		tx.Rollback()
+
 		return nil, myerror.ErrDB
 	}
 	pass := in.Pass
@@ -54,17 +54,14 @@ func (l *RegisterLogic) Register(in *user.LoginOrRegisterRequest) (*user.LoginOr
 	usr := model.User{
 		Name: username,
 		Pass: encodePWD,
-		Salt: string(salt),
 	}
 
 	//TODO 这里写插入数据库，并根据jwt生成token
 	if err = tx.Model(&model.User{}).Create(&usr).Error; err != nil {
-		tx.Rollback()
+		return nil, err
 	}
 
-	tx.Commit()
-
-	token := utils.SetToken(usr.ID)
+	token := utils.SetToken(usr.UserId)
 	return &user.LoginOrRegisterResponse{
 		Token: token,
 	}, nil
