@@ -61,7 +61,10 @@ func (l *RegisterLogic) Register(in *user.LoginOrRegisterRequest) (*user.LoginOr
 		return nil, err
 	}
 
-	token := utils.SetToken(usr.UserId)
+	token, err := utils.SetToken(usr.UserId)
+	if err != nil {
+		return nil, err
+	}
 	return &user.LoginOrRegisterResponse{
 		Token: token,
 	}, nil

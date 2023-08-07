@@ -8,3 +8,7 @@ type User struct {
 	Avatar    string `gorm:"not null" json:"avatar"`
 	Pass      string `gorm:"not null" json:"pass"`
 }
+
+func (u *User) TableName() string {
+	return "users"
+}

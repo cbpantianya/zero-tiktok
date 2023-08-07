@@ -13,7 +13,7 @@ type MyClaims struct {
 }
 
 //生成token
-func SetToken(uid int) string {
+func SetToken(uid int) (string, error) {
 	//设置到期时间
 	expireTime := time.Now().Add(24 * time.Hour) //24小时
 	//创建Jwt声明
@@ -30,9 +30,9 @@ func SetToken(uid int) string {
 	token, err := reqClain.SignedString(JwyKey)
 	//如果出错，则返回服务器内部错误
 	if err != nil {
-		return ""
+		return "", err
 	}
-	return token
+	return token, nil
 }
 
 //验证token
@@ -49,7 +49,7 @@ func CheckToken(token string) (*MyClaims, error) {
 }
 
 //验证token
-func GetUserIdByToken(token string) (int) {
+func GetUserIdByToken(token string) int {
 
 	//解析jwt字符串并将结果存储
 	setToken, _ := jwt.ParseWithClaims(token, &MyClaims{}, func(token *jwt.Token) (interface{}, error) {
