@@ -1,0 +1,29 @@
+syntax = "v1"
+
+type UserRegisterReq {
+	Username string `form:"username"`
+	Password string `form:"password"`
+}
+
+type UserLoginReq {
+	Username string `form:"username"`
+	Password string `form:"password"`
+}
+
+type UserTokenResp {
+	Code   int64  `json:"code"`
+	Msg    string `json:"msg"`
+	UserID int64  `json:"user_id"`
+	Token  string `json:"token"`
+}
+
+@server (
+	prefix: /douyin
+)
+service api {
+	@handler Login
+	post /user/login (UserLoginReq) returns (UserTokenResp)
+
+	@handler Register
+	post /user/register (UserRegisterReq) returns (UserTokenResp)
+}
