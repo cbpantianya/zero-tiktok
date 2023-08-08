@@ -1,0 +1,5 @@
+
+Name: interaction.rpc
+ListenOn: 0.0.0.0:9999
+
+DSN: root:root@(127.0.0.1:3306)/tiktok?charset=utf8mb4&parseTime=True&loc=Local
