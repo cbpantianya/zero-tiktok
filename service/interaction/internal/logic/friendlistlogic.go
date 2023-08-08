@@ -6,6 +6,7 @@ import (
 	e "zero-tiktok/internal/error"
 	"zero-tiktok/service/interaction/internal/model"
 	"zero-tiktok/service/interaction/internal/svc"
+	"zero-tiktok/service/interaction/internal/utils"
 	"zero-tiktok/service/interaction/pb/zero-tiktok/service/interaction"
 )
 
@@ -26,17 +27,20 @@ func (l *FriendListLogic) FriendList(req *interaction.FriendListRequest) (*inter
 	//这里认为互关的两个人为好友
 
 	relations := make([]*model.Relation, 0)
-	if err := l.svcCtx.DB.Where("user_id=?", req.UserId).Find(&relations).Error; err != nil {
+	if err := l.svcCtx.DB.Where("user_id=? or follower_id=?", req.UserId, req.UserId).Find(&relations).Error; err != nil {
 		return nil, e.ErrDB
 	}
 	friend_ids := make([]int64, 0)
+
 	for _, relation := range relations {
-		tmpRelation := &model.Relation{}
-		if err := l.svcCtx.DB.Where("user_id=? and follower_id=?", relation.FollowerID, relation.UserID).Find(tmpRelation).Error; err != nil {
-			continue
-		} else {
-			friend_ids = append(friend_ids, relation.FollowerID)
+		for _, subrelation := range relations {
+			if relation.FollowerID == subrelation.UserID && relation.UserID == subrelation.FollowerID {
+				friend_ids = append(friend_ids, relation.FollowerID)
+			} else {
+				continue
+			}
 		}
 	}
+	friend_ids = utils.DeleteSlice(friend_ids, req.UserId)
 	return &interaction.FriendListResponse{UserIdList: friend_ids}, nil
 }

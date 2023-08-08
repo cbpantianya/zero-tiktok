@@ -19,6 +19,6 @@ type Video struct {
 }
 
 type Relation struct {
-	UserID     int64 `gorm:"primary_key;not null" json:"user_id"`
+	UserID     int64 `gorm:"not null" json:"user_id"`
 	FollowerID int64 `gorm:"not null" json:"follower_id"`
 }
