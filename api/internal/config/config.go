@@ -9,5 +9,9 @@ type Config struct {
 			Host string `json:"host"`
 			Port int64  `json:"port"`
 		} `json:"user"`
+		Video struct {
+			Host string `json:"host"`
+			Port int64  `json:"port"`
+		} `json:"video"`
 	} `json:"rpc"`
 }

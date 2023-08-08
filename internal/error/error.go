@@ -30,4 +30,6 @@ var (
 	ErrParam = NewError(40001, "参数错误", errors.New("parameter error"))
 	// ErrDB 数据库错误（链接错误，查询失败，不包括空数据错误）
 	ErrDB = NewError(50001, "数据库错误", errors.New("database error"))
+	// ErrInner 内部错误
+	ErrInner = NewError(50002, "内部错误", errors.New("inner error"))
 )
