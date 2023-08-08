@@ -51,3 +51,9 @@ func (s *UserServiceServer) GetIdByToken(ctx context.Context, in *user.TokenToUs
 	l := logic.NewGetIdByTokenLogic(ctx, s.svcCtx)
 	return l.GetIdByToken(in)
 }
+
+// 获得用户关注和粉丝数量
+func (s *UserServiceServer) GetUserFollowAndFollowerCount(ctx context.Context, in *user.GetUserFollowAndFollowerCountRequest) (*user.GetUserFollowAndFollowerCountResponse, error) {
+	l := logic.NewGetUserFollowAndFollowerCountLogic(ctx, s.svcCtx)
+	return l.GetUserFollowAndFollowerCount(in)
+}

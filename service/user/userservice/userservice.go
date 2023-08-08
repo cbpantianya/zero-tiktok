@@ -13,15 +13,17 @@ import (
 )
 
 type (
-	GetUserRequest          = user.GetUserRequest
-	GetUserResponse         = user.GetUserResponse
-	GetUsersRequest         = user.GetUsersRequest
-	GetUsersResponse        = user.GetUsersResponse
-	LoginOrRegisterRequest  = user.LoginOrRegisterRequest
-	LoginOrRegisterResponse = user.LoginOrRegisterResponse
-	TokenToUserRequest      = user.TokenToUserRequest
-	TokenToUserResponse     = user.TokenToUserResponse
-	User                    = user.User
+	GetUserFollowAndFollowerCountRequest  = user.GetUserFollowAndFollowerCountRequest
+	GetUserFollowAndFollowerCountResponse = user.GetUserFollowAndFollowerCountResponse
+	GetUserRequest                        = user.GetUserRequest
+	GetUserResponse                       = user.GetUserResponse
+	GetUsersRequest                       = user.GetUsersRequest
+	GetUsersResponse                      = user.GetUsersResponse
+	LoginOrRegisterRequest                = user.LoginOrRegisterRequest
+	LoginOrRegisterResponse               = user.LoginOrRegisterResponse
+	TokenToUserRequest                    = user.TokenToUserRequest
+	TokenToUserResponse                   = user.TokenToUserResponse
+	User                                  = user.User
 
 	UserService interface {
 		// 登录
@@ -34,6 +36,8 @@ type (
 		GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error)
 		// 识别用户（token转id）
 		GetIdByToken(ctx context.Context, in *TokenToUserRequest, opts ...grpc.CallOption) (*TokenToUserResponse, error)
+		// 获得用户关注和粉丝数量
+		GetUserFollowAndFollowerCount(ctx context.Context, in *GetUserFollowAndFollowerCountRequest, opts ...grpc.CallOption) (*GetUserFollowAndFollowerCountResponse, error)
 	}
 
 	defaultUserService struct {
@@ -75,4 +79,10 @@ func (m *defaultUserService) GetUsers(ctx context.Context, in *GetUsersRequest, 
 func (m *defaultUserService) GetIdByToken(ctx context.Context, in *TokenToUserRequest, opts ...grpc.CallOption) (*TokenToUserResponse, error) {
 	client := user.NewUserServiceClient(m.cli.Conn())
 	return client.GetIdByToken(ctx, in, opts...)
+}
+
+// 获得用户关注和粉丝数量
+func (m *defaultUserService) GetUserFollowAndFollowerCount(ctx context.Context, in *GetUserFollowAndFollowerCountRequest, opts ...grpc.CallOption) (*GetUserFollowAndFollowerCountResponse, error) {
+	client := user.NewUserServiceClient(m.cli.Conn())
+	return client.GetUserFollowAndFollowerCount(ctx, in, opts...)
 }
