@@ -25,6 +25,7 @@ const (
 	InteractionService_FollowList_FullMethodName   = "/interaction.InteractionService/FollowList"
 	InteractionService_FollowerList_FullMethodName = "/interaction.InteractionService/FollowerList"
 	InteractionService_FriendList_FullMethodName   = "/interaction.InteractionService/FriendList"
+	InteractionService_HasFollowed_FullMethodName  = "/interaction.InteractionService/HasFollowed"
 )
 
 // InteractionServiceClient is the client API for InteractionService service.
@@ -37,6 +38,7 @@ type InteractionServiceClient interface {
 	FollowList(ctx context.Context, in *FollowListRequest, opts ...grpc.CallOption) (*FollowListResponse, error)
 	FollowerList(ctx context.Context, in *FollowerListRequest, opts ...grpc.CallOption) (*FollowerListResponse, error)
 	FriendList(ctx context.Context, in *FriendListRequest, opts ...grpc.CallOption) (*FriendListResponse, error)
+	HasFollowed(ctx context.Context, in *HasFollowedRequest, opts ...grpc.CallOption) (*HasFollowedResponse, error)
 }
 
 type interactionServiceClient struct {
@@ -101,6 +103,15 @@ func (c *interactionServiceClient) FriendList(ctx context.Context, in *FriendLis
 	return out, nil
 }
 
+func (c *interactionServiceClient) HasFollowed(ctx context.Context, in *HasFollowedRequest, opts ...grpc.CallOption) (*HasFollowedResponse, error) {
+	out := new(HasFollowedResponse)
+	err := c.cc.Invoke(ctx, InteractionService_HasFollowed_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // InteractionServiceServer is the server API for InteractionService service.
 // All implementations must embed UnimplementedInteractionServiceServer
 // for forward compatibility
@@ -111,6 +122,7 @@ type InteractionServiceServer interface {
 	FollowList(context.Context, *FollowListRequest) (*FollowListResponse, error)
 	FollowerList(context.Context, *FollowerListRequest) (*FollowerListResponse, error)
 	FriendList(context.Context, *FriendListRequest) (*FriendListResponse, error)
+	HasFollowed(context.Context, *HasFollowedRequest) (*HasFollowedResponse, error)
 	mustEmbedUnimplementedInteractionServiceServer()
 }
 
@@ -135,6 +147,9 @@ func (UnimplementedInteractionServiceServer) FollowerList(context.Context, *Foll
 }
 func (UnimplementedInteractionServiceServer) FriendList(context.Context, *FriendListRequest) (*FriendListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FriendList not implemented")
+}
+func (UnimplementedInteractionServiceServer) HasFollowed(context.Context, *HasFollowedRequest) (*HasFollowedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HasFollowed not implemented")
 }
 func (UnimplementedInteractionServiceServer) mustEmbedUnimplementedInteractionServiceServer() {}
 
@@ -257,6 +272,24 @@ func _InteractionService_FriendList_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _InteractionService_HasFollowed_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HasFollowedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InteractionServiceServer).HasFollowed(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: InteractionService_HasFollowed_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InteractionServiceServer).HasFollowed(ctx, req.(*HasFollowedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // InteractionService_ServiceDesc is the grpc.ServiceDesc for InteractionService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -287,6 +320,10 @@ var InteractionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FriendList",
 			Handler:    _InteractionService_FriendList_Handler,
+		},
+		{
+			MethodName: "HasFollowed",
+			Handler:    _InteractionService_HasFollowed_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

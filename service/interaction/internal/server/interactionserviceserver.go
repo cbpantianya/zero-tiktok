@@ -51,3 +51,8 @@ func (s *InteractionServiceServer) FriendList(ctx context.Context, in *interacti
 	l := logic.NewFriendListLogic(ctx, s.svcCtx)
 	return l.FriendList(in)
 }
+
+func (s *InteractionServiceServer) HasFollowed(ctx context.Context, in *interaction.HasFollowedRequest) (*interaction.HasFollowedResponse, error) {
+	l := logic.NewHasFollowedLogic(ctx, s.svcCtx)
+	return l.HasFollowed(in)
+}

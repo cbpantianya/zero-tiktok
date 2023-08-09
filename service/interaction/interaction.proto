@@ -63,6 +63,14 @@ message FriendListResponse{
    repeated int64 user_id_list=1; //返回id列表
 }
 
+message HasFollowedRequest{
+   int64 user_id=1;
+   repeated int64 target_id=2;
+}
+message HasFollowedResponse{
+   repeated bool result=1;
+}
+
 service InteractionService{
    rpc Comment(CommentRequest) returns (CommentResponse){}
    rpc CommentList(CommentListRequest) returns (CommentListResponse){}
@@ -70,5 +78,6 @@ service InteractionService{
    rpc FollowList(FollowListRequest) returns (FollowListResponse){}
    rpc FollowerList(FollowerListRequest) returns (FollowerListResponse){}
    rpc FriendList(FriendListRequest) returns (FriendListResponse) {}
+   rpc HasFollowed(HasFollowedRequest) returns (HasFollowedResponse) {}
 }
 

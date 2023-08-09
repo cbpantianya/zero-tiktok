@@ -24,6 +24,8 @@ type (
 	FollowerListResponse = interaction.FollowerListResponse
 	FriendListRequest    = interaction.FriendListRequest
 	FriendListResponse   = interaction.FriendListResponse
+	HasFollowedRequest   = interaction.HasFollowedRequest
+	HasFollowedResponse  = interaction.HasFollowedResponse
 	RelationRequest      = interaction.RelationRequest
 	RelationResponse     = interaction.RelationResponse
 
@@ -34,6 +36,7 @@ type (
 		FollowList(ctx context.Context, in *FollowListRequest, opts ...grpc.CallOption) (*FollowListResponse, error)
 		FollowerList(ctx context.Context, in *FollowerListRequest, opts ...grpc.CallOption) (*FollowerListResponse, error)
 		FriendList(ctx context.Context, in *FriendListRequest, opts ...grpc.CallOption) (*FriendListResponse, error)
+		HasFollowed(ctx context.Context, in *HasFollowedRequest, opts ...grpc.CallOption) (*HasFollowedResponse, error)
 	}
 
 	defaultInteractionService struct {
@@ -75,4 +78,9 @@ func (m *defaultInteractionService) FollowerList(ctx context.Context, in *Follow
 func (m *defaultInteractionService) FriendList(ctx context.Context, in *FriendListRequest, opts ...grpc.CallOption) (*FriendListResponse, error) {
 	client := interaction.NewInteractionServiceClient(m.cli.Conn())
 	return client.FriendList(ctx, in, opts...)
+}
+
+func (m *defaultInteractionService) HasFollowed(ctx context.Context, in *HasFollowedRequest, opts ...grpc.CallOption) (*HasFollowedResponse, error) {
+	client := interaction.NewInteractionServiceClient(m.cli.Conn())
+	return client.HasFollowed(ctx, in, opts...)
 }
