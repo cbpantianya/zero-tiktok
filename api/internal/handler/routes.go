@@ -27,6 +27,26 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/feed",
 				Handler: FeedHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/user",
+				Handler: UserInfoHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/publish/list",
+				Handler: PublishListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/favorite/list",
+				Handler: FavoriteListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/favorite/action",
+				Handler: FavoriteActionHandler(serverCtx),
+			},
 		},
 		rest.WithPrefix("/douyin"),
 	)

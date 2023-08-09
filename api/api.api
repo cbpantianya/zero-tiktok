@@ -54,6 +54,35 @@ type FeedResp {
 	List []Video `json:"video_list"`
 }
 
+type UserInfoReq {
+	UserID int64  `form:"user_id"`
+	Token  string `form:"token"`
+}
+
+type UserInfoResp {
+	Code int64  `json:"status_code"`
+	Msg  string `json:"status_msg"`
+	User Author `json:"user"`
+}
+
+// 被喜欢列表和发布列表使用
+type PublishListResp {
+	Code int64   `json:"status_code"`
+	Msg  string  `json:"status_msg"`
+	List []Video `json:"video_list"`
+}
+
+type FavoriteActionReq {
+	Token      string `form:"token"`
+	VideoID    int64  `form:"video_id"`
+	ActionType int64  `form:"action_type"`
+}
+
+type FavoriteActionResp {
+	Code int64  `json:"status_code"`
+	Msg  string `json:"status_msg"`
+}
+
 @server (
 	prefix: /douyin
 )
@@ -66,4 +95,17 @@ service api {
 
 	@handler Feed
 	get /feed (FeedReq) returns (FeedResp)
+
+	@handler UserInfo
+	get /user (UserInfoReq)  returns (UserInfoResp)
+
+	@handler PublishList
+	get /publish/list (UserInfoReq) returns (PublishListResp)
+
+	@handler FavoriteList
+	get /favorite/list (UserInfoReq) returns (PublishListResp)
+
+	@handler FavoriteAction
+	post /favorite/action (FavoriteActionReq) returns (FavoriteActionResp)
+
 }

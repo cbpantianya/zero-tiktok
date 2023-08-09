@@ -54,3 +54,31 @@ type FeedResp struct {
 	Next int64   `json:"next_time"`
 	List []Video `json:"video_list"`
 }
+
+type UserInfoReq struct {
+	UserID int64  `form:"user_id"`
+	Token  string `form:"token"`
+}
+
+type UserInfoResp struct {
+	Code int64  `json:"status_code"`
+	Msg  string `json:"status_msg"`
+	User Author `json:"user"`
+}
+
+type PublishListResp struct {
+	Code int64   `json:"status_code"`
+	Msg  string  `json:"status_msg"`
+	List []Video `json:"video_list"`
+}
+
+type FavoriteActionReq struct {
+	Token      string `form:"token"`
+	VideoID    int64  `form:"video_id"`
+	ActionType int64  `form:"action_type"`
+}
+
+type FavoriteActionResp struct {
+	Code int64  `json:"status_code"`
+	Msg  string `json:"status_msg"`
+}
