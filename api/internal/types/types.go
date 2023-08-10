@@ -82,3 +82,35 @@ type FavoriteActionResp struct {
 	Code int64  `json:"status_code"`
 	Msg  string `json:"status_msg"`
 }
+
+type Comment struct {
+	ID         int64  `json:"id"`
+	User       Author `json:"user"`
+	Content    string `json:"content"`
+	CreateDate string `json:"create_date"`
+}
+
+type CommentActionReq struct {
+	Token       string `form:"token"`
+	VideoID     string `form:"token"`
+	ActionType  string `form:"action_type"`
+	CommentText string `form:"comment_text"`
+	CommentID   string `form:"comment_id"`
+}
+
+type CommentActionResp struct {
+	Code    int64   `json:"status_code"`
+	Msg     string  `json:"status_msg"`
+	Comment Comment `json:"comment"`
+}
+
+type CommentListReq struct {
+	Token   string `form:"token"`
+	VideoID string `form:"video_id"`
+}
+
+type CommentListResp struct {
+	Code int64     `json:"status_code"`
+	Msg  string    `json:"status_msg"`
+	List []Comment `json:"comment_list"`
+}
