@@ -26,6 +26,7 @@ type VideoServiceClient interface {
 	Publish(ctx context.Context, in *PublishRequest, opts ...grpc.CallOption) (*VideoListResp, error)
 	Favorite(ctx context.Context, in *FavoriteAction, opts ...grpc.CallOption) (*FavoriteActionResp, error)
 	FavoriteList(ctx context.Context, in *FavoriteRequest, opts ...grpc.CallOption) (*VideoListResp, error)
+	IsFavorite(ctx context.Context, in *IsFavoriteReq, opts ...grpc.CallOption) (*IsFavoriteResp, error)
 }
 
 type videoServiceClient struct {
@@ -72,6 +73,15 @@ func (c *videoServiceClient) FavoriteList(ctx context.Context, in *FavoriteReque
 	return out, nil
 }
 
+func (c *videoServiceClient) IsFavorite(ctx context.Context, in *IsFavoriteReq, opts ...grpc.CallOption) (*IsFavoriteResp, error) {
+	out := new(IsFavoriteResp)
+	err := c.cc.Invoke(ctx, "/video.VideoService/IsFavorite", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // VideoServiceServer is the server API for VideoService service.
 // All implementations must embed UnimplementedVideoServiceServer
 // for forward compatibility
@@ -80,6 +90,7 @@ type VideoServiceServer interface {
 	Publish(context.Context, *PublishRequest) (*VideoListResp, error)
 	Favorite(context.Context, *FavoriteAction) (*FavoriteActionResp, error)
 	FavoriteList(context.Context, *FavoriteRequest) (*VideoListResp, error)
+	IsFavorite(context.Context, *IsFavoriteReq) (*IsFavoriteResp, error)
 	mustEmbedUnimplementedVideoServiceServer()
 }
 
@@ -98,6 +109,9 @@ func (UnimplementedVideoServiceServer) Favorite(context.Context, *FavoriteAction
 }
 func (UnimplementedVideoServiceServer) FavoriteList(context.Context, *FavoriteRequest) (*VideoListResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FavoriteList not implemented")
+}
+func (UnimplementedVideoServiceServer) IsFavorite(context.Context, *IsFavoriteReq) (*IsFavoriteResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IsFavorite not implemented")
 }
 func (UnimplementedVideoServiceServer) mustEmbedUnimplementedVideoServiceServer() {}
 
@@ -184,6 +198,24 @@ func _VideoService_FavoriteList_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _VideoService_IsFavorite_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IsFavoriteReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VideoServiceServer).IsFavorite(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/video.VideoService/IsFavorite",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VideoServiceServer).IsFavorite(ctx, req.(*IsFavoriteReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // VideoService_ServiceDesc is the grpc.ServiceDesc for VideoService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -206,6 +238,10 @@ var VideoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FavoriteList",
 			Handler:    _VideoService_FavoriteList_Handler,
+		},
+		{
+			MethodName: "IsFavorite",
+			Handler:    _VideoService_IsFavorite_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
