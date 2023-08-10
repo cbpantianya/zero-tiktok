@@ -83,6 +83,43 @@ type FavoriteActionResp {
 	Msg  string `json:"status_msg"`
 }
 
+// 评论
+type Comment {
+	ID             int64  `json:"id"`
+	User Author `json:"user"` 
+	Content string `json:"content"`
+	CreateDate string `json:"create_date"`
+}
+
+
+// 评论操作请求
+type CommentActionReq{
+	Token string `form:"token"`
+	VideoID string `form:"token"`
+	ActionType string `form:"action_type"`
+	CommentText string `form:"comment_text"`
+	CommentID string `form:"comment_id"`
+}
+
+// 评论操作响应
+type CommentActionResp{
+	Code int64  `json:"status_code"`
+	Msg  string `json:"status_msg"`
+	Comment Comment `json:"comment"`
+}
+
+// 评论列表请求
+type CommentListReq{
+	Token string `form:"token"`
+	VideoID string `form:"token"`
+}
+
+// 评论列表响应
+type CommentListResp{
+	Code int64  `json:"status_code"`
+	Msg  string `json:"status_msg"`
+	List []Comment `json:"comment_list"`
+}
 @server (
 	prefix: /douyin
 )
@@ -108,4 +145,9 @@ service api {
 	@handler FavoriteAction
 	post /favorite/action (FavoriteActionReq) returns (FavoriteActionResp)
 
+	@handler CommentAction
+	post /comment/action (CommentActionReq) returns (CommentActionResp)
+
+	@handler CommentList
+	get /comment/list (CommentListReq) returns (CommentListResp)
 }
