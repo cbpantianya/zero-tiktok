@@ -4,6 +4,7 @@ import (
 	"context"
 	"strconv"
 	e "zero-tiktok/internal/error"
+	"zero-tiktok/service/interaction/pb/zero-tiktok/service/interaction"
 	"zero-tiktok/service/user/pb/zero-tiktok/service/user"
 	"zero-tiktok/service/video/pb/zero-tiktok/service/video"
 
@@ -81,6 +82,35 @@ func (l *FavoriteListLogic) FavoriteList(req *types.UserInfoReq) (resp *types.Pu
 			WorkCount:      -1, // TODO: Users
 			FavoriteCount:  v.FavoriteCount,
 		}
+	}
+
+	// 查询是否关注
+	if id != nil {
+		isF, err := l.svcCtx.Interaction.HasFollowed(l.ctx, &interaction.HasFollowedRequest{
+			UserId:   id.UserId,
+			TargetId: userIDs,
+		})
+		if err != nil {
+			return nil, e.ErrInner
+		}
+
+		// range 列表
+		for k, v := range userIDs {
+			authorsID[v] = types.Author{
+				ID:             authorsID[v].ID,
+				Name:           authorsID[v].Name,
+				FollowCount:    authorsID[v].FollowCount,
+				FollowerCount:  authorsID[v].FollowerCount,
+				IsFollow:       isF.Result[k],
+				Avatar:         authorsID[v].Avatar,
+				Background:     authorsID[v].Background,
+				Signature:      authorsID[v].Signature,
+				TotalFavorited: authorsID[v].TotalFavorited,
+				WorkCount:      authorsID[v].WorkCount,
+				FavoriteCount:  authorsID[v].FavoriteCount,
+			}
+		}
+
 	}
 
 	resp = &types.PublishListResp{}

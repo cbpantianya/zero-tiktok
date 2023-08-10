@@ -3,6 +3,8 @@ package logic
 import (
 	"context"
 	"strconv"
+	e "zero-tiktok/internal/error"
+	"zero-tiktok/service/interaction/pb/zero-tiktok/service/interaction"
 	"zero-tiktok/service/user/pb/zero-tiktok/service/user"
 	"zero-tiktok/service/video/pb/zero-tiktok/service/video"
 
@@ -28,7 +30,7 @@ func NewPublishListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Publi
 
 func (l *PublishListLogic) PublishList(req *types.UserInfoReq) (resp *types.PublishListResp, err error) {
 	// Token to id
-	_, err = l.svcCtx.UserClient.GetIdByToken(l.ctx, &user.TokenToUserRequest{
+	ids, err := l.svcCtx.UserClient.GetIdByToken(l.ctx, &user.TokenToUserRequest{
 		Token: req.Token,
 	})
 
@@ -56,12 +58,20 @@ func (l *PublishListLogic) PublishList(req *types.UserInfoReq) (resp *types.Publ
 		return
 	}
 
+	isF, err := l.svcCtx.Interaction.HasFollowed(l.ctx, &interaction.HasFollowedRequest{
+		UserId:   ids.UserId,
+		TargetId: []int64{req.UserID},
+	})
+	if err != nil {
+		return nil, e.ErrInner
+	}
+
 	author := types.Author{
 		ID:             authorInfo.User.UserId,
 		Name:           authorInfo.User.Name,
 		FollowCount:    authorInfo.User.FollowCount,
 		FollowerCount:  authorInfo.User.FollowerCount,
-		IsFollow:       false,
+		IsFollow:       isF.Result[0],
 		Avatar:         authorInfo.User.Avatar,
 		Background:     authorInfo.User.Cover,
 		Signature:      authorInfo.User.Signature,

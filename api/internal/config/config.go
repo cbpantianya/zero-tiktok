@@ -13,5 +13,10 @@ type Config struct {
 			Host string `json:"host"`
 			Port int64  `json:"port"`
 		} `json:"video"`
+
+		Interaction struct {
+			Host string `json:"host"`
+			Port int64  `json:"port"`
+		} `json:"interaction"`
 	} `json:"rpc"`
 }

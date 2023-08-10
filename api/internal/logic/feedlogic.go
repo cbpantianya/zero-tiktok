@@ -6,6 +6,7 @@ import (
 	"time"
 	"zero-tiktok/api/internal/svc"
 	"zero-tiktok/api/internal/types"
+	"zero-tiktok/service/interaction/pb/zero-tiktok/service/interaction"
 	"zero-tiktok/service/user/pb/zero-tiktok/service/user"
 	"zero-tiktok/service/video/pb/zero-tiktok/service/video"
 
@@ -107,6 +108,35 @@ func (l *FeedLogic) Feed(req *types.FeedReq) (resp *types.FeedResp, err error) {
 			WorkCount:      -1, // TODO: Users
 			FavoriteCount:  v.FavoriteCount,
 		}
+	}
+
+	// 查询是否关注
+	if id != nil {
+		isF, err := l.svcCtx.Interaction.HasFollowed(l.ctx, &interaction.HasFollowedRequest{
+			UserId:   *id,
+			TargetId: userIDs,
+		})
+		if err != nil {
+			return nil, e.ErrInner
+		}
+
+		// range 列表
+		for k, v := range userIDs {
+			authorsID[v] = types.Author{
+				ID:             authorsID[v].ID,
+				Name:           authorsID[v].Name,
+				FollowCount:    authorsID[v].FollowCount,
+				FollowerCount:  authorsID[v].FollowerCount,
+				IsFollow:       isF.Result[k],
+				Avatar:         authorsID[v].Avatar,
+				Background:     authorsID[v].Background,
+				Signature:      authorsID[v].Signature,
+				TotalFavorited: authorsID[v].TotalFavorited,
+				WorkCount:      authorsID[v].WorkCount,
+				FavoriteCount:  authorsID[v].FavoriteCount,
+			}
+		}
+
 	}
 
 	resp = &types.FeedResp{}
