@@ -30,6 +30,12 @@ type UserServiceClient interface {
 	GetIdByToken(ctx context.Context, in *TokenToUserRequest, opts ...grpc.CallOption) (*TokenToUserResponse, error)
 	//获得用户关注和粉丝数量
 	GetUserFollowAndFollowerCount(ctx context.Context, in *GetUserFollowAndFollowerCountRequest, opts ...grpc.CallOption) (*GetUserFollowAndFollowerCountResponse, error)
+	//获得用户发布的视频总数
+	GetUserVideoCount(ctx context.Context, in *GetUserVideoCountRequest, opts ...grpc.CallOption) (*GetUserVideoCountResponse, error)
+	//用户的获赞总数
+	GetUserTotalFavorited(ctx context.Context, in *GetUserTotalFavoritedRequest, opts ...grpc.CallOption) (*GetUserTotalFavoritedResponse, error)
+	//单个视频的点赞量
+	GetVideoFavorited(ctx context.Context, in *GetVideoFavoritedRequest, opts ...grpc.CallOption) (*GetVideolFavoritedResponse, error)
 }
 
 type userServiceClient struct {
@@ -94,6 +100,33 @@ func (c *userServiceClient) GetUserFollowAndFollowerCount(ctx context.Context, i
 	return out, nil
 }
 
+func (c *userServiceClient) GetUserVideoCount(ctx context.Context, in *GetUserVideoCountRequest, opts ...grpc.CallOption) (*GetUserVideoCountResponse, error) {
+	out := new(GetUserVideoCountResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/GetUserVideoCount", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) GetUserTotalFavorited(ctx context.Context, in *GetUserTotalFavoritedRequest, opts ...grpc.CallOption) (*GetUserTotalFavoritedResponse, error) {
+	out := new(GetUserTotalFavoritedResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/GetUserTotalFavorited", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) GetVideoFavorited(ctx context.Context, in *GetVideoFavoritedRequest, opts ...grpc.CallOption) (*GetVideolFavoritedResponse, error) {
+	out := new(GetVideolFavoritedResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/GetVideoFavorited", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -110,6 +143,12 @@ type UserServiceServer interface {
 	GetIdByToken(context.Context, *TokenToUserRequest) (*TokenToUserResponse, error)
 	//获得用户关注和粉丝数量
 	GetUserFollowAndFollowerCount(context.Context, *GetUserFollowAndFollowerCountRequest) (*GetUserFollowAndFollowerCountResponse, error)
+	//获得用户发布的视频总数
+	GetUserVideoCount(context.Context, *GetUserVideoCountRequest) (*GetUserVideoCountResponse, error)
+	//用户的获赞总数
+	GetUserTotalFavorited(context.Context, *GetUserTotalFavoritedRequest) (*GetUserTotalFavoritedResponse, error)
+	//单个视频的点赞量
+	GetVideoFavorited(context.Context, *GetVideoFavoritedRequest) (*GetVideolFavoritedResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -134,6 +173,15 @@ func (UnimplementedUserServiceServer) GetIdByToken(context.Context, *TokenToUser
 }
 func (UnimplementedUserServiceServer) GetUserFollowAndFollowerCount(context.Context, *GetUserFollowAndFollowerCountRequest) (*GetUserFollowAndFollowerCountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserFollowAndFollowerCount not implemented")
+}
+func (UnimplementedUserServiceServer) GetUserVideoCount(context.Context, *GetUserVideoCountRequest) (*GetUserVideoCountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserVideoCount not implemented")
+}
+func (UnimplementedUserServiceServer) GetUserTotalFavorited(context.Context, *GetUserTotalFavoritedRequest) (*GetUserTotalFavoritedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserTotalFavorited not implemented")
+}
+func (UnimplementedUserServiceServer) GetVideoFavorited(context.Context, *GetVideoFavoritedRequest) (*GetVideolFavoritedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetVideoFavorited not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -256,6 +304,60 @@ func _UserService_GetUserFollowAndFollowerCount_Handler(srv interface{}, ctx con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_GetUserVideoCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserVideoCountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetUserVideoCount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/GetUserVideoCount",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetUserVideoCount(ctx, req.(*GetUserVideoCountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_GetUserTotalFavorited_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserTotalFavoritedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetUserTotalFavorited(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/GetUserTotalFavorited",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetUserTotalFavorited(ctx, req.(*GetUserTotalFavoritedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_GetVideoFavorited_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetVideoFavoritedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetVideoFavorited(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/GetVideoFavorited",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetVideoFavorited(ctx, req.(*GetVideoFavoritedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -286,6 +388,18 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserFollowAndFollowerCount",
 			Handler:    _UserService_GetUserFollowAndFollowerCount_Handler,
+		},
+		{
+			MethodName: "GetUserVideoCount",
+			Handler:    _UserService_GetUserVideoCount_Handler,
+		},
+		{
+			MethodName: "GetUserTotalFavorited",
+			Handler:    _UserService_GetUserTotalFavorited_Handler,
+		},
+		{
+			MethodName: "GetVideoFavorited",
+			Handler:    _UserService_GetVideoFavorited_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

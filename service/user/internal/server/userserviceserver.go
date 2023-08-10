@@ -57,3 +57,21 @@ func (s *UserServiceServer) GetUserFollowAndFollowerCount(ctx context.Context, i
 	l := logic.NewGetUserFollowAndFollowerCountLogic(ctx, s.svcCtx)
 	return l.GetUserFollowAndFollowerCount(in)
 }
+
+// 获得用户发布的视频总数
+func (s *UserServiceServer) GetUserVideoCount(ctx context.Context, in *user.GetUserVideoCountRequest) (*user.GetUserVideoCountResponse, error) {
+	l := logic.NewGetUserVideoCountLogic(ctx, s.svcCtx)
+	return l.GetUserVideoCount(in)
+}
+
+// 用户的获赞总数
+func (s *UserServiceServer) GetUserTotalFavorited(ctx context.Context, in *user.GetUserTotalFavoritedRequest) (*user.GetUserTotalFavoritedResponse, error) {
+	l := logic.NewGetUserTotalFavoritedLogic(ctx, s.svcCtx)
+	return l.GetUserTotalFavorited(in)
+}
+
+// 单个视频的点赞量
+func (s *UserServiceServer) GetVideoFavorited(ctx context.Context, in *user.GetVideoFavoritedRequest) (*user.GetVideolFavoritedResponse, error) {
+	l := logic.NewGetVideoFavoritedLogic(ctx, s.svcCtx)
+	return l.GetVideoFavorited(in)
+}
