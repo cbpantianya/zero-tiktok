@@ -93,9 +93,9 @@ type Comment struct {
 type CommentActionReq struct {
 	Token       string `form:"token"`
 	VideoID     int64  `form:"video_id"`
-	ActionType  string `form:"action_type"`
+	ActionType  int64  `form:"action_type"`
 	CommentText string `form:"comment_text"`
-	CommentID   string `form:"comment_id"`
+	CommentID   int64  `form:"comment_id"`
 }
 
 type CommentActionResp struct {
