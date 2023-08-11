@@ -30,7 +30,7 @@ func (l *CommentLogic) Comment(req *interaction.CommentRequest) (*interaction.Co
 			VideoID:     req.VideoId,
 			UserID:      req.UserId,
 			CommentText: *req.CommentText,
-			CommentID:   *req.CommentId,
+			// CommentID:   *req.CommentId,
 			//CreatedAt:
 		}
 		if err := l.svcCtx.DB.Create(comment).Error; err != nil {

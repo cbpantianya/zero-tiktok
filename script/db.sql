@@ -4,7 +4,8 @@ create table comments
     user_id      int           not null comment '评论者ID',
     comment_text varchar(1024) null,
     comment_id   bigint auto_increment
-        primary key
+        primary key,
+    created_at   timestamp     null
 );
 
 create index favorites_video_id_index
@@ -32,8 +33,7 @@ create table users
     signature varchar(100) default '这个人很懒，什么都没有留下' null,
     cover     varchar(512)                                     not null comment '用户个人页顶部大图',
     avatar    varchar(512)                                     not null,
-    pass      varchar(32)                                      not null,
-    salt      varchar(8)                                       not null
+    pass      varchar(60)                                      not null
 );
 
 create index users_user_id_name_index
