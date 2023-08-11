@@ -94,7 +94,7 @@ type Comment {
 // 评论操作请求
 type CommentActionReq {
 	Token       string `form:"token"`
-	VideoID     string `form:"token"`
+	VideoID     int64  `form:"video_id"`
 	ActionType  string `form:"action_type"`
 	CommentText string `form:"comment_text"`
 	CommentID   string `form:"comment_id"`
@@ -110,7 +110,7 @@ type CommentActionResp {
 // 评论列表请求
 type CommentListReq {
 	Token   string `form:"token"`
-	VideoID string `form:"video_id"`
+	VideoID int64  `form:"video_id"`
 }
 
 // 评论列表响应
