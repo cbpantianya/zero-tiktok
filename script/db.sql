@@ -4,7 +4,8 @@ create table comments
     user_id      int           not null comment '评论者ID',
     comment_text varchar(1024) null,
     comment_id   bigint auto_increment
-        primary key
+        primary key,
+    created_at   timestamp     null
 );
 
 create index favorites_video_id_index
