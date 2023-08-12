@@ -1,13 +1,16 @@
 package handler
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/google/uuid"
+	"io"
 	"mime/multipart"
 	"net/http"
 	"zero-tiktok/service/user/pb/zero-tiktok/service/user"
 	"zero-tiktok/service/video/pb/zero-tiktok/service/video"
 
+	"github.com/h2non/filetype"
 	"github.com/zeromicro/go-zero/rest/httpx"
 	"zero-tiktok/api/internal/logic"
 	"zero-tiktok/api/internal/svc"
@@ -23,7 +26,7 @@ func UploadVideoHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 
 		// 手动解析form中file字段的数据
-		file, _, err := r.FormFile("data")
+		file, header, err := r.FormFile("data")
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
@@ -39,6 +42,28 @@ func UploadVideoHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
+
+		// 判断是否为视频
+		tmp, err := header.Open()
+		if err != nil {
+			httpx.ErrorCtx(r.Context(), w, err)
+			return
+		}
+		buf := bytes.NewBuffer(nil)
+		if _, err := io.Copy(buf, tmp); err != nil {
+			httpx.ErrorCtx(r.Context(), w, err)
+			return
+		}
+		if !filetype.IsVideo(buf.Bytes()) {
+			httpx.ErrorCtx(r.Context(), w, err)
+			return
+		}
+		if err = tmp.Close(); err != nil {
+			httpx.ErrorCtx(r.Context(), w, err)
+			return
+		}
+
+		// 抽取第一帧作为封面
 
 		id, err := svcCtx.UserClient.GetIdByToken(r.Context(), &user.TokenToUserRequest{
 			Token: req.Token,
