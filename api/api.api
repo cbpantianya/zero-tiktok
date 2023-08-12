@@ -43,7 +43,7 @@ type Video {
 	CoverUrl       string `json:"cover_url"`
 	FavouriteCount int64  `json:"favorite_count"`
 	CommentCount   int64  `json:"comment_count"`
-	IsFavourite    bool   `json:"is_favourite"`
+	IsFavourite    bool   `json:"is_favorite"`
 	Title          string `json:"title"`
 }
 
@@ -144,7 +144,7 @@ service api {
 	get /feed (FeedReq) returns (FeedResp)
 
 	@handler UserInfo
-	get /user (UserInfoReq)  returns (UserInfoResp)
+	get /user (UserInfoReq) returns (UserInfoResp)
 
 	@handler PublishList
 	get /publish/list (UserInfoReq) returns (PublishListResp)
@@ -163,3 +163,4 @@ service api {
 
 	@handler UploadVideo
 	post /publish/action (UploadVideo) returns (UploadVideoResp)
+}
