@@ -34,7 +34,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 func initDB(c config.Config) *DBList {
 	dbList := new(DBList)
 	dbList.Mysql = initMysql(c)
-	dbList.Redis = initRedis(c)
+	//dbList.Redis = initRedis(c)
 
 	return dbList
 }

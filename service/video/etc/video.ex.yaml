@@ -1,4 +1,4 @@
 Name: video.rpc
-ListenOn: 0.0.0.0:8080
+ListenOn: 0.0.0.0:9002
 
 DSN: root:k8s666k3s999@(127.0.0.1:3306)/zero-tiktok?charset=utf8mb4&parseTime=True&loc=Local

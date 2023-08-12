@@ -41,3 +41,13 @@ func (s *VideoServiceServer) FavoriteList(ctx context.Context, in *video.Favorit
 	l := logic.NewFavoriteListLogic(ctx, s.svcCtx)
 	return l.FavoriteList(in)
 }
+
+func (s *VideoServiceServer) IsFavorite(ctx context.Context, in *video.IsFavoriteReq) (*video.IsFavoriteResp, error) {
+	l := logic.NewIsFavoriteLogic(ctx, s.svcCtx)
+	return l.IsFavorite(in)
+}
+
+func (s *VideoServiceServer) CreateVideo(ctx context.Context, in *video.CreateVideoReq) (*video.CreateVideoResp, error) {
+	l := logic.NewCreateVideoLogic(ctx, s.svcCtx)
+	return l.CreateVideo(in)
+}

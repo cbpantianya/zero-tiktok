@@ -43,6 +43,24 @@ message FavoriteRequest {
   int64 target_id = 2; // 访问目标用户的ID
 }
 
+message IsFavoriteReq {
+  int64 user_id = 1;
+  repeated  int64 video_id = 2;
+}
+
+message IsFavoriteResp {
+  repeated bool is_favorite = 1;
+}
+
+message CreateVideoReq {
+  int64 user_id = 1;
+  string title = 2;
+  string play = 4;
+}
+
+message CreateVideoResp {
+  int64 video_id = 1;
+}
 
 
 service VideoService {
@@ -50,6 +68,8 @@ service VideoService {
   rpc Publish (PublishRequest) returns (VideoListResp) {}
   rpc Favorite (FavoriteAction) returns (FavoriteActionResp) {}
   rpc FavoriteList (FavoriteRequest) returns (VideoListResp) {}
+  rpc IsFavorite (IsFavoriteReq) returns (IsFavoriteResp) {}
+  rpc CreateVideo (CreateVideoReq) returns (CreateVideoResp) {}
 }
 
 

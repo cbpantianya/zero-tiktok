@@ -1,0 +1,165 @@
+syntax = "v1"
+
+type UserRegisterReq {
+	Username string `form:"username"`
+	Password string `form:"password"`
+}
+
+type UserLoginReq {
+	Username string `form:"username"`
+	Password string `form:"password"`
+}
+
+type UserTokenResp {
+	Code   int64  `json:"status_code"`
+	Msg    string `json:"status_msg"`
+	UserID int64  `json:"user_id"`
+	Token  string `json:"token"`
+}
+
+type FeedReq {
+	Latest string `form:"latest_time,optional"`
+	Token  string `form:"token,optional"`
+}
+
+type Author {
+	ID             int64  `json:"id"`
+	Name           string `json:"name"`
+	FollowCount    int64  `json:"follow_count"`
+	FollowerCount  int64  `json:"follower_count"`
+	IsFollow       bool   `json:"is_follow"`
+	Avatar         string `json:"avatar"`
+	Background     string `json:"background_image"`
+	Signature      string `json:"signature"`
+	TotalFavorited string `json:"total_favorited"`
+	WorkCount      int64  `json:"work_count"`
+	FavoriteCount  int64  `json:"favorite_count"`
+}
+
+type Video {
+	ID             int64  `json:"id"`
+	Author         Author `json:"author"`
+	PlayUrl        string `json:"play_url"`
+	CoverUrl       string `json:"cover_url"`
+	FavouriteCount int64  `json:"favourite_count"`
+	CommentCount   int64  `json:"comment_count"`
+	IsFavourite    bool   `json:"is_favourite"`
+	Title          string `json:"title"`
+}
+
+type FeedResp {
+	Code int64   `json:"status_code"`
+	Msg  string  `json:"status_msg"`
+	Next int64   `json:"next_time"`
+	List []Video `json:"video_list"`
+}
+
+type UserInfoReq {
+	UserID int64  `form:"user_id"`
+	Token  string `form:"token,optional"`
+}
+
+type UserInfoResp {
+	Code int64  `json:"status_code"`
+	Msg  string `json:"status_msg"`
+	User Author `json:"user"`
+}
+
+// 被喜欢列表和发布列表使用
+type PublishListResp {
+	Code int64   `json:"status_code"`
+	Msg  string  `json:"status_msg"`
+	List []Video `json:"video_list"`
+}
+
+type FavoriteActionReq {
+	Token      string `form:"token"`
+	VideoID    int64  `form:"video_id"`
+	ActionType int64  `form:"action_type"`
+}
+
+type FavoriteActionResp {
+	Code int64  `json:"status_code"`
+	Msg  string `json:"status_msg"`
+}
+
+// 评论
+type Comment {
+	ID         int64  `json:"id"`
+	User       Author `json:"user"`
+	Content    string `json:"content"`
+	CreateDate string `json:"create_date"`
+}
+
+// 评论操作请求
+type CommentActionReq {
+	Token       string `form:"token"`
+	VideoID     int64  `form:"video_id"`
+	ActionType  int64  `form:"action_type"`
+	CommentText string `form:"comment_text,optional"`
+	CommentID   int64  `form:"comment_id,optional"`
+}
+
+// 评论操作响应
+type CommentActionResp {
+	Code    int64   `json:"status_code"`
+	Msg     string  `json:"status_msg"`
+	Comment Comment `json:"comment"`
+}
+
+// 评论列表请求
+type CommentListReq {
+	Token   string `form:"token"`
+	VideoID int64  `form:"video_id"`
+}
+
+// 评论列表响应
+type CommentListResp {
+	Code int64     `json:"status_code"`
+	Msg  string    `json:"status_msg"`
+	List []Comment `json:"comment_list"`
+}
+
+type UploadVideo {
+	Title string `form:"title"`
+	Token string `form:"token"`
+}
+
+type UploadVideoResp {
+	Code int64  `json:"status_code"`
+	Msg  string `json:"status_msg"`
+}
+
+@server (
+	prefix: /douyin
+)
+service api {
+	@handler Login
+	post /user/login (UserLoginReq) returns (UserTokenResp)
+
+	@handler Register
+	post /user/register (UserRegisterReq) returns (UserTokenResp)
+
+	@handler Feed
+	get /feed (FeedReq) returns (FeedResp)
+
+	@handler UserInfo
+	get /user (UserInfoReq)  returns (UserInfoResp)
+
+	@handler PublishList
+	get /publish/list (UserInfoReq) returns (PublishListResp)
+
+	@handler FavoriteList
+	get /favorite/list (UserInfoReq) returns (PublishListResp)
+
+	@handler FavoriteAction
+	post /favorite/action (FavoriteActionReq) returns (FavoriteActionResp)
+
+	@handler CommentAction
+	post /comment/action (CommentActionReq) returns (CommentActionResp)
+
+	@handler CommentList
+	get /comment/list (CommentListReq) returns (CommentListResp)
+
+	@handler UploadVideo
+	post /publish/action (UploadVideo) returns (UploadVideoResp)

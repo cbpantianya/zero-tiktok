@@ -13,10 +13,14 @@ import (
 )
 
 type (
+	CreateVideoReq     = video.CreateVideoReq
+	CreateVideoResp    = video.CreateVideoResp
 	FavoriteAction     = video.FavoriteAction
 	FavoriteActionResp = video.FavoriteActionResp
 	FavoriteRequest    = video.FavoriteRequest
 	FeedRequest        = video.FeedRequest
+	IsFavoriteReq      = video.IsFavoriteReq
+	IsFavoriteResp     = video.IsFavoriteResp
 	PublishRequest     = video.PublishRequest
 	Video              = video.Video
 	VideoListResp      = video.VideoListResp
@@ -26,6 +30,8 @@ type (
 		Publish(ctx context.Context, in *PublishRequest, opts ...grpc.CallOption) (*VideoListResp, error)
 		Favorite(ctx context.Context, in *FavoriteAction, opts ...grpc.CallOption) (*FavoriteActionResp, error)
 		FavoriteList(ctx context.Context, in *FavoriteRequest, opts ...grpc.CallOption) (*VideoListResp, error)
+		IsFavorite(ctx context.Context, in *IsFavoriteReq, opts ...grpc.CallOption) (*IsFavoriteResp, error)
+		CreateVideo(ctx context.Context, in *CreateVideoReq, opts ...grpc.CallOption) (*CreateVideoResp, error)
 	}
 
 	defaultVideoService struct {
@@ -57,4 +63,14 @@ func (m *defaultVideoService) Favorite(ctx context.Context, in *FavoriteAction, 
 func (m *defaultVideoService) FavoriteList(ctx context.Context, in *FavoriteRequest, opts ...grpc.CallOption) (*VideoListResp, error) {
 	client := video.NewVideoServiceClient(m.cli.Conn())
 	return client.FavoriteList(ctx, in, opts...)
+}
+
+func (m *defaultVideoService) IsFavorite(ctx context.Context, in *IsFavoriteReq, opts ...grpc.CallOption) (*IsFavoriteResp, error) {
+	client := video.NewVideoServiceClient(m.cli.Conn())
+	return client.IsFavorite(ctx, in, opts...)
+}
+
+func (m *defaultVideoService) CreateVideo(ctx context.Context, in *CreateVideoReq, opts ...grpc.CallOption) (*CreateVideoResp, error) {
+	client := video.NewVideoServiceClient(m.cli.Conn())
+	return client.CreateVideo(ctx, in, opts...)
 }
