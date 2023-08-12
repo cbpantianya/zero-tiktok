@@ -35,8 +35,10 @@ func (l *PublishListLogic) PublishList(req *types.UserInfoReq) (resp *types.Publ
 	})
 
 	if err != nil {
-		l.Logger.Error(err)
-		return
+		// 忽略
+		ids = &user.TokenToUserResponse{
+			UserId: 0,
+		}
 	}
 
 	list, err := l.svcCtx.VideoClient.Publish(l.ctx, &video.PublishRequest{
@@ -76,7 +78,7 @@ func (l *PublishListLogic) PublishList(req *types.UserInfoReq) (resp *types.Publ
 		Background:     authorInfo.User.Cover,
 		Signature:      authorInfo.User.Signature,
 		TotalFavorited: strconv.FormatInt(authorInfo.User.TotalFavorited, 10),
-		WorkCount:      -1,
+		WorkCount:      authorInfo.User.VideoCount,
 		FavoriteCount:  authorInfo.User.FavoriteCount,
 	}
 

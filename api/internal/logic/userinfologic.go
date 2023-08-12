@@ -51,7 +51,7 @@ func (l *UserInfoLogic) UserInfo(req *types.UserInfoReq) (resp *types.UserInfoRe
 			Background:     userInfo.User.Cover,
 			Signature:      userInfo.User.Signature,
 			TotalFavorited: strconv.FormatInt(userInfo.User.TotalFavorited, 10),
-			WorkCount:      -1,
+			WorkCount:      userInfo.User.VideoCount,
 			FavoriteCount:  userInfo.User.FavoriteCount,
 		},
 	}

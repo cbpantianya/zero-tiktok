@@ -56,7 +56,7 @@ type FeedResp {
 
 type UserInfoReq {
 	UserID int64  `form:"user_id"`
-	Token  string `form:"token"`
+	Token  string `form:"token,optional"`
 }
 
 type UserInfoResp {
@@ -95,9 +95,9 @@ type Comment {
 type CommentActionReq {
 	Token       string `form:"token"`
 	VideoID     int64  `form:"video_id"`
-	ActionType  int64 `form:"action_type"`
+	ActionType  int64  `form:"action_type"`
 	CommentText string `form:"comment_text"`
-	CommentID   int64 `form:"comment_id"`
+	CommentID   int64  `form:"comment_id"`
 }
 
 // 评论操作响应
@@ -119,6 +119,17 @@ type CommentListResp {
 	Msg  string    `json:"status_msg"`
 	List []Comment `json:"comment_list"`
 }
+
+type UploadVideo {
+	Title string `form:"title"`
+	Token string `form:"token"`
+}
+
+type UploadVideoResp {
+	Code int64  `json:"status_code"`
+	Msg  string `json:"status_msg"`
+}
+
 @server (
 	prefix: /douyin
 )
@@ -149,4 +160,7 @@ service api {
 
 	@handler CommentList
 	get /comment/list (CommentListReq) returns (CommentListResp)
+
+	@handler UploadVideo
+	post /publish/action (UploadVideo) returns (UploadVideoResp)
 }
