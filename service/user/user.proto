@@ -52,40 +52,6 @@ message TokenToUserResponse {
   int64 user_id = 1;
 }
 
-message GetUserFollowAndFollowerCountRequest{
-  int64 user_id = 1;
-}
-
-message GetUserFollowAndFollowerCountResponse{
-  int64 follow_count = 1;
-  int64 follower_count = 2;
-}
-
-message GetUserVideoCountRequest{
-  int64 user_id = 1;
-}
-
-message GetUserVideoCountResponse{
-  int64 video_count = 1;
-}
-
-message GetUserTotalFavoritedRequest{
-  int64 user_id = 1;
-}
-
-message GetUserTotalFavoritedResponse{
-  int64 total_favorited = 1;
-}
-
-message GetVideoFavoritedRequest{
-  int64 video_id = 1;
-}
-
-message GetVideolFavoritedResponse{
-  int64 favorite_count = 1;
-}
-
-
 
 
 service UserService {
@@ -101,15 +67,5 @@ service UserService {
   //识别用户（token转id）
   rpc GetIdByToken(TokenToUserRequest)returns (TokenToUserResponse);
 
-  //获得用户关注和粉丝数量
-  rpc GetUserFollowAndFollowerCount(GetUserFollowAndFollowerCountRequest)returns(GetUserFollowAndFollowerCountResponse);
 
-  //获得用户发布的视频总数
-  rpc GetUserVideoCount(GetUserVideoCountRequest)returns (GetUserVideoCountResponse);
-
-  //用户的获赞总数
-  rpc GetUserTotalFavorited(GetUserTotalFavoritedRequest)returns (GetUserTotalFavoritedResponse);
-
-  //单个视频的点赞量
-  rpc GetVideoFavorited(GetVideoFavoritedRequest)returns (GetVideolFavoritedResponse);
 }
