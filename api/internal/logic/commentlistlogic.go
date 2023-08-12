@@ -62,18 +62,18 @@ func (l *CommentListLogic) CommentList(req *types.CommentListReq) (resp *types.C
 		}
 	}
 	// 2.2 实际构造
-	// MM-DD 时间格式
-	MMDD := "01-02"
-	resp.Code = 0
-	resp.Msg = "success"
-	resp.List = []types.Comment{}
+	_resp := &types.CommentListResp{
+		Code: 0,
+		Msg:  "success",
+	}
 	for _, v := range list.CommentList {
-		resp.List = append(resp.List, types.Comment{
+		_resp.List = append(_resp.List, types.Comment{
 			ID:         v.CommentId,
 			User:       _users[v.UserId],
 			Content:    v.Content,
-			CreateDate: time.Unix(v.CreatedAt, 0).Format(MMDD),
+			CreateDate: time.Unix(v.CreatedAt, 0).Format("01-02"),
 		})
 	}
-	return resp, nil
+	resp = _resp
+	return
 }

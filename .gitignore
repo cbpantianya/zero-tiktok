@@ -15,3 +15,5 @@ go.work
 user.yaml
 /service/video/etc/video.yaml
 /api/etc/api.yaml
+service/interaction/etc/interaction.yaml
+service/interaction/etc/interaction.yaml
