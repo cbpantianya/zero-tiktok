@@ -21,9 +21,15 @@ jobs:
       with:
         go-version: '1.20'
 
-    - name: BuildUser
+    - name: user rpc builder
       run: go build -v ./service/user/user.go
 
-    - name: BuildVideo
+    - name: video rpc builder
       run: go build -v ./service/video/video.go
+
+    - name: interaction rpc builder
+      run: go build -v ./service/interaction/interaction.go
+
+    - name: api builder
+      run: go build -v ./api/api.go
 
