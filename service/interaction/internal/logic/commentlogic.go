@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"fmt"
 	"github.com/zeromicro/go-zero/core/logx"
 	"time"
 	e "zero-tiktok/internal/error"
@@ -28,14 +29,15 @@ func (l *CommentLogic) Comment(req *interaction.CommentRequest) (*interaction.Co
 	//发布评论
 	var commentId int64
 	if req.ActionType == 1 {
-		comment := &model.Comment{
+		comment := model.Comment{
 			VideoID:     req.VideoId,
 			UserID:      req.UserId,
 			CommentText: *req.CommentText,
 		}
-		if err := l.svcCtx.DB.Create(comment).Error; err != nil {
+		if err := l.svcCtx.DB.Create(&comment).Error; err != nil {
 			return nil, e.ErrDB
 		}
+		fmt.Println(comment)
 		commentId = comment.CommentID
 	} else if req.ActionType == 2 { //删除评论
 		commentId = *req.CommentId
