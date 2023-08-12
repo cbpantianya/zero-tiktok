@@ -35,6 +35,7 @@ message GetUserResponse {
   User user = 1;
 }
 
+
 message GetUsersRequest {
   repeated int64 user_ids = 1;
 }
@@ -65,4 +66,6 @@ service UserService {
 
   //识别用户（token转id）
   rpc GetIdByToken(TokenToUserRequest)returns (TokenToUserResponse);
+
+
 }

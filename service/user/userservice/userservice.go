@@ -13,15 +13,23 @@ import (
 )
 
 type (
-	GetUserRequest          = user.GetUserRequest
-	GetUserResponse         = user.GetUserResponse
-	GetUsersRequest         = user.GetUsersRequest
-	GetUsersResponse        = user.GetUsersResponse
-	LoginOrRegisterRequest  = user.LoginOrRegisterRequest
-	LoginOrRegisterResponse = user.LoginOrRegisterResponse
-	TokenToUserRequest      = user.TokenToUserRequest
-	TokenToUserResponse     = user.TokenToUserResponse
-	User                    = user.User
+	GetUserFollowAndFollowerCountRequest  = user.GetUserFollowAndFollowerCountRequest
+	GetUserFollowAndFollowerCountResponse = user.GetUserFollowAndFollowerCountResponse
+	GetUserRequest                        = user.GetUserRequest
+	GetUserResponse                       = user.GetUserResponse
+	GetUserTotalFavoritedRequest          = user.GetUserTotalFavoritedRequest
+	GetUserTotalFavoritedResponse         = user.GetUserTotalFavoritedResponse
+	GetUserVideoCountRequest              = user.GetUserVideoCountRequest
+	GetUserVideoCountResponse             = user.GetUserVideoCountResponse
+	GetUsersRequest                       = user.GetUsersRequest
+	GetUsersResponse                      = user.GetUsersResponse
+	GetVideoFavoritedRequest              = user.GetVideoFavoritedRequest
+	GetVideolFavoritedResponse            = user.GetVideolFavoritedResponse
+	LoginOrRegisterRequest                = user.LoginOrRegisterRequest
+	LoginOrRegisterResponse               = user.LoginOrRegisterResponse
+	TokenToUserRequest                    = user.TokenToUserRequest
+	TokenToUserResponse                   = user.TokenToUserResponse
+	User                                  = user.User
 
 	UserService interface {
 		// 登录
@@ -34,6 +42,14 @@ type (
 		GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error)
 		// 识别用户（token转id）
 		GetIdByToken(ctx context.Context, in *TokenToUserRequest, opts ...grpc.CallOption) (*TokenToUserResponse, error)
+		// 获得用户关注和粉丝数量
+		GetUserFollowAndFollowerCount(ctx context.Context, in *GetUserFollowAndFollowerCountRequest, opts ...grpc.CallOption) (*GetUserFollowAndFollowerCountResponse, error)
+		// 获得用户发布的视频总数
+		GetUserVideoCount(ctx context.Context, in *GetUserVideoCountRequest, opts ...grpc.CallOption) (*GetUserVideoCountResponse, error)
+		// 用户的获赞总数
+		GetUserTotalFavorited(ctx context.Context, in *GetUserTotalFavoritedRequest, opts ...grpc.CallOption) (*GetUserTotalFavoritedResponse, error)
+		// 单个视频的点赞量
+		GetVideoFavorited(ctx context.Context, in *GetVideoFavoritedRequest, opts ...grpc.CallOption) (*GetVideolFavoritedResponse, error)
 	}
 
 	defaultUserService struct {
@@ -75,4 +91,28 @@ func (m *defaultUserService) GetUsers(ctx context.Context, in *GetUsersRequest, 
 func (m *defaultUserService) GetIdByToken(ctx context.Context, in *TokenToUserRequest, opts ...grpc.CallOption) (*TokenToUserResponse, error) {
 	client := user.NewUserServiceClient(m.cli.Conn())
 	return client.GetIdByToken(ctx, in, opts...)
+}
+
+// 获得用户关注和粉丝数量
+func (m *defaultUserService) GetUserFollowAndFollowerCount(ctx context.Context, in *GetUserFollowAndFollowerCountRequest, opts ...grpc.CallOption) (*GetUserFollowAndFollowerCountResponse, error) {
+	client := user.NewUserServiceClient(m.cli.Conn())
+	return client.GetUserFollowAndFollowerCount(ctx, in, opts...)
+}
+
+// 获得用户发布的视频总数
+func (m *defaultUserService) GetUserVideoCount(ctx context.Context, in *GetUserVideoCountRequest, opts ...grpc.CallOption) (*GetUserVideoCountResponse, error) {
+	client := user.NewUserServiceClient(m.cli.Conn())
+	return client.GetUserVideoCount(ctx, in, opts...)
+}
+
+// 用户的获赞总数
+func (m *defaultUserService) GetUserTotalFavorited(ctx context.Context, in *GetUserTotalFavoritedRequest, opts ...grpc.CallOption) (*GetUserTotalFavoritedResponse, error) {
+	client := user.NewUserServiceClient(m.cli.Conn())
+	return client.GetUserTotalFavorited(ctx, in, opts...)
+}
+
+// 单个视频的点赞量
+func (m *defaultUserService) GetVideoFavorited(ctx context.Context, in *GetVideoFavoritedRequest, opts ...grpc.CallOption) (*GetVideolFavoritedResponse, error) {
+	client := user.NewUserServiceClient(m.cli.Conn())
+	return client.GetVideoFavorited(ctx, in, opts...)
 }
