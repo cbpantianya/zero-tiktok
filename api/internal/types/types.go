@@ -57,7 +57,7 @@ type FeedResp struct {
 
 type UserInfoReq struct {
 	UserID int64  `form:"user_id"`
-	Token  string `form:"token"`
+	Token  string `form:"token,optional"`
 }
 
 type UserInfoResp struct {
@@ -113,4 +113,14 @@ type CommentListResp struct {
 	Code int64     `json:"status_code"`
 	Msg  string    `json:"status_msg"`
 	List []Comment `json:"comment_list"`
+}
+
+type UploadVideo struct {
+	Title string `form:"title"`
+	Token string `form:"token"`
+}
+
+type UploadVideoResp struct {
+	Code int64  `json:"status_code"`
+	Msg  string `json:"status_msg"`
 }

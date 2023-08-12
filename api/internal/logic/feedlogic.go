@@ -105,7 +105,7 @@ func (l *FeedLogic) Feed(req *types.FeedReq) (resp *types.FeedResp, err error) {
 			Background:     v.Cover,
 			Signature:      v.Signature,
 			TotalFavorited: strconv.FormatInt(v.TotalFavorited, 10),
-			WorkCount:      -1, // TODO: Users
+			WorkCount:      v.VideoCount, // TODO: Users
 			FavoriteCount:  v.FavoriteCount,
 		}
 	}

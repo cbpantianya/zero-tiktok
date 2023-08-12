@@ -56,7 +56,7 @@ type FeedResp {
 
 type UserInfoReq {
 	UserID int64  `form:"user_id"`
-	Token  string `form:"token"`
+	Token  string `form:"token,optional"`
 }
 
 type UserInfoResp {
@@ -119,6 +119,17 @@ type CommentListResp {
 	Msg  string    `json:"status_msg"`
 	List []Comment `json:"comment_list"`
 }
+
+type UploadVideo {
+	Title string `form:"title"`
+	Token string `form:"token"`
+}
+
+type UploadVideoResp {
+	Code int64  `json:"status_code"`
+	Msg  string `json:"status_msg"`
+}
+
 @server (
 	prefix: /douyin
 )
@@ -149,4 +160,6 @@ service api {
 
 	@handler CommentList
 	get /comment/list (CommentListReq) returns (CommentListResp)
-}
+
+	@handler UploadVideo
+	post /publish/action (UploadVideo) returns (UploadVideoResp)

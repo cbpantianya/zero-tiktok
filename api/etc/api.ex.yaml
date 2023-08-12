@@ -1,0 +1,23 @@
+Name: api
+Host: 0.0.0.0
+Port: 8888
+
+rpc:
+  user:
+    host: 127.0.0.1
+    port: 9001
+
+  video:
+    host: 127.0.0.1
+    port: 9002
+
+  interaction:
+    host: 127.0.0.1
+    port: 9999
+
+oss:
+  endpoint: XXX
+  accessKeyId: XXX
+  accessKeySecret: XXX
+  bucket: XXX
+  domain: XXX

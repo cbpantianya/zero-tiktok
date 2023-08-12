@@ -33,10 +33,11 @@ func (l *FavoriteListLogic) FavoriteList(req *types.UserInfoReq) (resp *types.Pu
 	id, err := l.svcCtx.UserClient.GetIdByToken(l.ctx, &user.TokenToUserRequest{
 		Token: req.Token,
 	})
-
 	if err != nil {
-		l.Logger.Error(err)
-		return
+		// 忽略
+		id = &user.TokenToUserResponse{
+			UserId: 0,
+		}
 	}
 
 	list, err := l.svcCtx.VideoClient.FavoriteList(l.ctx, &video.FavoriteRequest{
@@ -79,7 +80,7 @@ func (l *FavoriteListLogic) FavoriteList(req *types.UserInfoReq) (resp *types.Pu
 			Background:     v.Cover,
 			Signature:      v.Signature,
 			TotalFavorited: strconv.FormatInt(v.TotalFavorited, 10),
-			WorkCount:      -1, // TODO: Users
+			WorkCount:      v.VideoCount,
 			FavoriteCount:  v.FavoriteCount,
 		}
 	}

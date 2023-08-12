@@ -2,6 +2,8 @@ package svc
 
 import (
 	"fmt"
+	"github.com/aliyun/aliyun-oss-go-sdk/oss"
+	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/zrpc"
 	"zero-tiktok/api/internal/config"
 	"zero-tiktok/service/interaction/pb/zero-tiktok/service/interaction"
@@ -14,6 +16,7 @@ type ServiceContext struct {
 	UserClient  user.UserServiceClient
 	VideoClient video.VideoServiceClient
 	Interaction interaction.InteractionServiceClient
+	OSSClient   *oss.Bucket
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -35,10 +38,21 @@ func NewServiceContext(c config.Config) *ServiceContext {
 
 	ia := interaction.NewInteractionServiceClient(connI.Conn())
 
+	osc, err := oss.New(c.OSS.Endpoint, c.OSS.AccessKeyId, c.OSS.AccessKeySecret)
+	if err != nil {
+		logx.Error(err)
+	}
+
+	osb, err := osc.Bucket(c.OSS.BucketName)
+	if err != nil {
+		logx.Error(err)
+	}
+
 	return &ServiceContext{
 		Config:      c,
 		UserClient:  uc,
 		VideoClient: vid,
 		Interaction: ia,
+		OSSClient:   osb,
 	}
 }
