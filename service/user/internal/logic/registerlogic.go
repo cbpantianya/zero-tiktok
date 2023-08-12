@@ -52,8 +52,11 @@ func (l *RegisterLogic) Register(in *user.LoginOrRegisterRequest) (*user.LoginOr
 	encodePWD := string(hash) // 保存在数据库的密码，虽然每次生成都不同，只需保存一份即可
 	fmt.Println(encodePWD)
 	usr := model.User{
-		Name: username,
-		Pass: encodePWD,
+		Name:      username,
+		Pass:      encodePWD,
+		Signature: "这个人很懒，什么都没有留下",
+		Avatar:    "https://pic1.zhimg.com/50/v2-6afa72220d29f045c15217aa6b275808_hd.jpg?source=1940ef5c",
+		Cover:     "https://tse3-mm.cn.bing.net/th/id/OIP-C.K03bmv8yI_CYhvW_-_unRgHaEN?w=329&h=187&c=7&r=0&o=5&dpr=1.3&pid=1.7",
 	}
 
 	//TODO 这里写插入数据库，并根据jwt生成token

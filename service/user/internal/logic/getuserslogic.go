@@ -37,11 +37,9 @@ func (l *GetUsersLogic) GetUsers(in *user.GetUsersRequest) (*user.GetUsersRespon
 
 	// 查询符合条件的用户
 	if err := tx.Model(&model.User{}).Where("user_id in (?)", ids).Find(&users).Error; err != nil {
-		tx.Rollback()
+
 		return nil, err
 	}
-
-	tx.Commit()
 
 	// 构建用户响应
 	var userResponses []*user.User
