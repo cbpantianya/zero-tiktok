@@ -25,5 +25,9 @@ func NewUploadVideoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Uploa
 
 func (l *UploadVideoLogic) UploadVideo(req *types.UploadVideo) (resp *types.UploadVideoResp, err error) {
 	// 此处不应该填写任何逻辑，请前往handle
+	resp = &types.UploadVideoResp{
+		Msg:  "ok",
+		Code: 0,
+	}
 	return
 }

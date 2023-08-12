@@ -143,7 +143,7 @@ func (l *FeedLogic) Feed(req *types.FeedReq) (resp *types.FeedResp, err error) {
 
 	resp.Code = 0
 	resp.Msg = "success"
-	resp.Next = next
+	resp.Next = next * 1000
 	resp.List = []types.Video{}
 	for _, v := range list.List {
 		resp.List = append(resp.List, types.Video{
