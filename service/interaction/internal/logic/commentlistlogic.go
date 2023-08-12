@@ -35,13 +35,8 @@ func (l *CommentListLogic) CommentList(req *interaction.CommentListRequest) (*in
 		comment_ids = append(comment_ids, comment.CommentID)
 	}
 
-	comments := make([]*model.Comment, 0)
-	if err := l.svcCtx.DB.Where("video_id in (?)", comment_ids).Find(&comments).Error; err != nil {
-		return nil, e.ErrDB
-	}
-
 	res_list := make([]*interaction.Comment, 0)
-	for _, comment := range comments {
+	for _, comment := range commentlist {
 		res_list = append(res_list, &interaction.Comment{
 			CommentId: comment.CommentID,
 			UserId:    comment.UserID,
@@ -49,6 +44,7 @@ func (l *CommentListLogic) CommentList(req *interaction.CommentListRequest) (*in
 			CreatedAt: comment.CreatedAt.Unix(),
 		})
 	}
+
 	//按发布时间倒序
 	sort.Slice(res_list, func(i, j int) bool {
 		return res_list[i].CreatedAt > res_list[j].CreatedAt
