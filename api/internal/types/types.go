@@ -42,9 +42,9 @@ type Video struct {
 	Author         Author `json:"author"`
 	PlayUrl        string `json:"play_url"`
 	CoverUrl       string `json:"cover_url"`
-	FavouriteCount int64  `json:"favourite_count"`
+	FavouriteCount int64  `json:"favorite_count"`
 	CommentCount   int64  `json:"comment_count"`
-	IsFavourite    bool   `json:"is_favourite"`
+	IsFavourite    bool   `json:"is_favorite"`
 	Title          string `json:"title"`
 }
 
