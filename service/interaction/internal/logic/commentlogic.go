@@ -28,7 +28,9 @@ func NewCommentLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CommentLo
 func (l *CommentLogic) Comment(req *interaction.CommentRequest) (*interaction.CommentResponse, error) {
 	//发布评论
 	var commentId int64
+	var commentText string
 	if req.ActionType == 1 {
+		commentText = *req.CommentText
 		comment := model.Comment{
 			VideoID:     req.VideoId,
 			UserID:      req.UserId,
@@ -41,15 +43,26 @@ func (l *CommentLogic) Comment(req *interaction.CommentRequest) (*interaction.Co
 		commentId = comment.CommentID
 	} else if req.ActionType == 2 { //删除评论
 		commentId = *req.CommentId
-		if err := l.svcCtx.DB.Where("comment_id=?", req.CommentId).Delete(&model.Comment{}).Error; err != nil {
+		comment := model.Comment{
+			CommentID: commentId,
+		}
+
+		// find first
+		err := l.svcCtx.DB.Find(&comment).Error
+		if err != nil {
+			return nil, e.ErrDB
+		}
+		commentText = comment.CommentText
+		if err := l.svcCtx.DB.Delete(&comment).Error; err != nil {
 			return nil, e.ErrDB
 		}
 	}
+
 	return &interaction.CommentResponse{
 		Comment: &interaction.Comment{
 			CommentId: commentId,
 			UserId:    req.UserId,
-			Content:   *req.CommentText,
+			Content:   commentText,
 			CreatedAt: time.Now().Unix(),
 		},
 	}, nil
