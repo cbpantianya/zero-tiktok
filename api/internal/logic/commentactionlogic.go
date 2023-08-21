@@ -2,13 +2,14 @@ package logic
 
 import (
 	"context"
+	// "fmt"
 	"strconv"
-	"time"
-
 	"zero-tiktok/api/internal/svc"
 	"zero-tiktok/api/internal/types"
 	"zero-tiktok/service/interaction/pb/zero-tiktok/service/interaction"
 	"zero-tiktok/service/user/pb/zero-tiktok/service/user"
+
+	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -48,17 +49,37 @@ func (l *CommentActionLogic) CommentAction(req *types.CommentActionReq) (resp *t
 	}
 	// 2. 调用rpc服务
 	_req.VideoId = req.VideoID
-	_req.ActionType = int32(req.ActionType)
-	_req.CommentText = &req.CommentText
-	_req.CommentId = &req.CommentID
-	// 2.1 评论操作
+	// 2.1 校验操作类型
+	switch int32(req.ActionType) {
+	// ActionType 1 发布评论
+	case int32(1):
+		_req.ActionType = int32(req.ActionType)
+		//  评论不能为空
+		if req.CommentText == "" {
+			return &types.CommentActionResp{
+				Code: -1,
+				Msg:  "评论内容不能为空",
+			}, nil
+		}
+		_req.CommentText = &req.CommentText
+	// ActionType 2 删除评论
+	case int32(2):
+		_req.ActionType = int32(req.ActionType)
+		_req.CommentId = &req.CommentID
+	default:
+		return &types.CommentActionResp{
+			Code: -1,
+			Msg:  "不支持的操作，请重试",
+		}, nil
+	}
+	// 2.2 评论操作
 	_resp_comment, err := l.svcCtx.Interaction.Comment(l.ctx, &_req)
 	if err != nil {
 		l.Logger.Error(err)
 		return
 	}
 	_comment := _resp_comment.Comment
-	// 2.2 获取评论用户信息
+	// 2.3 获取评论用户信息
 	_user_resp, err := l.svcCtx.UserClient.GetUser(l.ctx, &user.GetUserRequest{
 		UserId: _req.UserId,
 	})
@@ -76,13 +97,15 @@ func (l *CommentActionLogic) CommentAction(req *types.CommentActionReq) (resp *t
 		FavoriteCount:  _user_resp.User.FavoriteCount,
 	}
 	// 3 构造结构体返回
-	resp.Code = 0
-	resp.Msg = "success"
-	resp.Comment = types.Comment{
-		ID:         _comment.CommentId,
-		User:       _user,
-		Content:    _comment.Content,
-		CreateDate: time.Unix(_comment.CreatedAt, 0).Format("01-02"),
+	resp = &types.CommentActionResp{
+		Code: 0,
+		Msg:  "success",
+		Comment: types.Comment{
+			ID:         _resp_comment.Comment.CommentId,
+			User:       _user,
+			Content:    _comment.Content,
+			CreateDate: time.Now().Format("01-02"),
+		},
 	}
 	return
 }
