@@ -124,3 +124,25 @@ type UploadVideoResp struct {
 	Code int64  `json:"status_code"`
 	Msg  string `json:"status_msg"`
 }
+
+type RelationAction struct {
+	Token      string `form:"token"`
+	UserID     int64  `form:"to_user_id"`
+	ActionType int64  `form:"action_type"`
+}
+
+type RelationActionResp struct {
+	Code int64  `json:"status_code"`
+	Msg  string `json:"status_msg"`
+}
+
+type RelationFollowList struct {
+	Token  string `form:"token"`
+	UserID int64  `form:"user_id"`
+}
+
+type RelationFollowListResp struct {
+	Code int64    `json:"status_code"`
+	Msg  string   `json:"status_msg"`
+	List []Author `json:"user_list"`
+}

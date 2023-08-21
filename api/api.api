@@ -130,6 +130,28 @@ type UploadVideoResp {
 	Msg  string `json:"status_msg"`
 }
 
+type RelationAction {
+	Token      string `form:"token"`
+	UserID     int64  `form:"to_user_id"`
+	ActionType int64  `form:"action_type"`
+}
+
+type RelationActionResp {
+	Code int64  `json:"status_code"`
+	Msg  string `json:"status_msg"`
+}
+
+type RelationFollowList {
+	Token  string `form:"token"`
+	UserID int64  `form:"user_id"`
+}
+
+type RelationFollowListResp {
+	Code int64    `json:"status_code"`
+	Msg  string   `json:"status_msg"`
+	List []Author `json:"user_list"`
+}
+
 @server (
 	prefix: /douyin
 )
@@ -163,4 +185,13 @@ service api {
 
 	@handler UploadVideo
 	post /publish/action (UploadVideo) returns (UploadVideoResp)
+
+	@handler RelationAction
+	post /relation/action (RelationAction) returns (RelationActionResp)
+
+	@handler RelationFollowList
+	get /relation/follow/list (RelationFollowList) returns (RelationFollowListResp)
+
+	@handler RelationFollowerList
+	get /relation/follower/list (RelationFollowList) returns (RelationFollowListResp)
 }
