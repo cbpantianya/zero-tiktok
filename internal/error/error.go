@@ -32,4 +32,6 @@ var (
 	ErrDB = NewError(50001, "数据库错误", errors.New("database error"))
 	// ErrInner 内部错误
 	ErrInner = NewError(50002, "内部错误", errors.New("inner error"))
+	// ErrAuth 认证错误
+	ErrAuth = NewError(50003, "认证错误", errors.New("auth error"))
 )

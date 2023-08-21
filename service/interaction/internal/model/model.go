@@ -6,7 +6,7 @@ type Comment struct {
 	VideoID     int64     `gorm:"not null" json:"video_id"`
 	UserID      int64     `gorm:"not null" json:"user_id"`
 	CommentText string    `gorm:"not null" json:"comment_text"`
-	CommentID   int64     `gorm:"not null" json:"comment_id"`
+	CommentID   int64     `gorm:"primary_key;not null" json:"comment_id"`
 	CreatedAt   time.Time `grom:"not null" json:"created_at"`
 }
 type Video struct {

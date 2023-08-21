@@ -2,7 +2,9 @@ package logic
 
 import (
 	"context"
+	"fmt"
 	"github.com/zeromicro/go-zero/core/logx"
+	"time"
 	e "zero-tiktok/internal/error"
 	"zero-tiktok/service/interaction/internal/model"
 	"zero-tiktok/service/interaction/internal/svc"
@@ -25,21 +27,43 @@ func NewCommentLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CommentLo
 
 func (l *CommentLogic) Comment(req *interaction.CommentRequest) (*interaction.CommentResponse, error) {
 	//发布评论
+	var commentId int64
+	var commentText string
 	if req.ActionType == 1 {
-		comment := &model.Comment{
+		commentText = *req.CommentText
+		comment := model.Comment{
 			VideoID:     req.VideoId,
 			UserID:      req.UserId,
 			CommentText: *req.CommentText,
-			// CommentID:   *req.CommentId,
-			//CreatedAt:
 		}
-		if err := l.svcCtx.DB.Create(comment).Error; err != nil {
+		if err := l.svcCtx.DB.Create(&comment).Error; err != nil {
 			return nil, e.ErrDB
 		}
+		fmt.Println(comment)
+		commentId = comment.CommentID
 	} else if req.ActionType == 2 { //删除评论
-		if err := l.svcCtx.DB.Where("comment_id=?", req.CommentId).Delete(&model.Comment{}).Error; err != nil {
+		commentId = *req.CommentId
+		comment := model.Comment{
+			CommentID: commentId,
+		}
+
+		// find first
+		err := l.svcCtx.DB.Find(&comment).Error
+		if err != nil {
+			return nil, e.ErrDB
+		}
+		commentText = comment.CommentText
+		if err := l.svcCtx.DB.Delete(&comment).Error; err != nil {
 			return nil, e.ErrDB
 		}
 	}
-	return &interaction.CommentResponse{}, nil
+
+	return &interaction.CommentResponse{
+		Comment: &interaction.Comment{
+			CommentId: commentId,
+			UserId:    req.UserId,
+			Content:   commentText,
+			CreatedAt: time.Now().Unix(),
+		},
+	}, nil
 }

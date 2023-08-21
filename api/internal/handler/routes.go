@@ -62,6 +62,21 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/publish/action",
 				Handler: UploadVideoHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/relation/action",
+				Handler: RelationActionHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/relation/follow/list",
+				Handler: RelationFollowListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/relation/follower/list",
+				Handler: RelationFollowerListHandler(serverCtx),
+			},
 		},
 		rest.WithPrefix("/douyin"),
 	)
